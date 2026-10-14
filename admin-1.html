@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obey Your Needs — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --navy:#153042; --navy-deep:#0e2431; --teal:#3E7C8C; --teal-light:#DCEBEE;
+    --sand:#F4EFE6; --paper:#FBFAF7; --buoy:#E4572E; --buoy-dark:#C7431D;
+    --ink:#1B2A30; --ink-soft:#5B6C72; --line:#DDD5C4; --good:#1F7A44; --good-bg:#E4F3E8;
+    --radius-s:6px; --radius-m:10px;
+    --font-display:'Fraunces', serif; --font-body:'Public Sans', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--font-body); color:var(--ink); background:var(--sand); line-height:1.5;}
+  a{color:inherit;}
+  h1,h2,h3{font-family:var(--font-display); color:var(--navy-deep); font-weight:600;}
+  button{font-family:inherit; cursor:pointer;}
+  input,select,textarea{font-family:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- Login screen ---------- */
+  #loginScreen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .login-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:36px; max-width:380px; width:100%;
+  }
+  .login-card h1{font-size:22px; margin-bottom:6px;}
+  .login-card p{color:var(--ink-soft); font-size:14px; margin-bottom:24px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:600; color:var(--ink-soft); margin-bottom:7px;}
+  .field input, .field select{
+    width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:var(--radius-s);
+    font-size:14.5px; background:var(--paper);
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:11px 20px; border-radius:var(--radius-s); font-weight:600; font-size:14.5px; border:none;
+  }
+  .btn-primary{background:var(--navy); color:var(--paper); width:100%;}
+  .btn-primary:hover{background:var(--navy-deep);}
+  .btn-outline{background:transparent; color:var(--navy); border:1.5px solid var(--navy);}
+  .btn-outline:hover{background:var(--navy); color:var(--paper);}
+  .btn-danger{background:transparent; color:#A3352F; border:1.5px solid #E3C2BE;}
+  .btn-danger:hover{background:#F3E4E4;}
+  .btn-sm{padding:7px 14px; font-size:13px;}
+  .error-msg{background:#F3E4E4; color:#A3352F; padding:10px 12px; border-radius:var(--radius-s); font-size:13.5px; margin-bottom:16px; display:none;}
+  .error-msg.show{display:block;}
+  .config-warning{
+    background:#FFF4E5; border:1px solid #F0CB94; color:#8A5A00; padding:14px 16px;
+    border-radius:var(--radius-s); font-size:13.5px; margin-bottom:20px; line-height:1.5;
+  }
+
+  /* ---------- App shell ---------- */
+  #appScreen{display:none; min-height:100vh;}
+  header.top{background:var(--navy-deep); color:var(--sand); padding:16px 0;}
+  header.top .wrap{display:flex; justify-content:space-between; align-items:center;}
+  header.top .brand{font-family:var(--font-display); font-size:19px; font-weight:600;}
+  header.top .sub{font-size:12.5px; color:#9FC2C9;}
+  .tabs{display:flex; gap:8px; background:var(--paper); border-bottom:1px solid var(--line); padding:14px 0 0;}
+  .tabs .wrap{display:flex; gap:8px;}
+  .tab-btn{
+    padding:10px 18px; border-radius:var(--radius-s) var(--radius-s) 0 0; font-weight:600; font-size:14px;
+    background:transparent; border:none; color:var(--ink-soft);
+  }
+  .tab-btn.active{background:var(--sand); color:var(--navy-deep);}
+  .panel-area{padding:28px 0 60px;}
+  .attention-banner{
+    margin-top:20px; background:#FFF4E5; border:1px solid #F0CB94; color:#8A5A00;
+    padding:16px 18px; border-radius:var(--radius-m); font-size:14px; display:flex;
+    align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  }
+  .attention-banner.clear{background:var(--good-bg); border-color:#A9D8B8; color:var(--good);}
+  .attention-banner button{
+    background:var(--navy); color:var(--paper); border:none; padding:8px 16px;
+    border-radius:var(--radius-s); font-size:13px; font-weight:600; white-space:nowrap;
+  }
+  .attention-banner.clear button{display:none;}
+  .section-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:16px; flex-wrap:wrap;}
+  .section-head h2{font-size:20px;}
+
+  /* ---------- Product table ---------- */
+  .table-wrap{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th{text-align:left; padding:12px 14px; background:var(--sand); font-size:12px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.3px;}
+  td{padding:12px 14px; border-top:1px solid var(--line); vertical-align:middle;}
+  tr:hover td{background:#FAFAF8;}
+  .stock-toggle{display:flex; align-items:center; gap:8px; cursor:pointer;}
+  .stock-toggle .dot{width:9px; height:9px; border-radius:50%; background:var(--good);}
+  .stock-toggle.out .dot{background:#A3352F;}
+  .row-actions{display:flex; gap:8px;}
+  .icon-btn{width:30px; height:30px; border-radius:6px; border:1px solid var(--line); background:var(--paper); display:flex; align-items:center; justify-content:center;}
+  .icon-btn:hover{background:var(--sand);}
+  .empty-note{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14px;}
+
+  /* ---------- Product edit modal ---------- */
+  .modal-overlay{position:fixed; inset:0; background:rgba(14,36,49,0.5); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
+  .modal-overlay.show{display:flex;}
+  .modal{background:var(--paper); border-radius:var(--radius-m); padding:28px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto;}
+  .modal h3{font-size:18px; margin-bottom:18px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .modal-actions{display:flex; gap:10px; margin-top:8px;}
+  .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
+  .variant-row{
+    display:grid; grid-template-columns:1.4fr 0.9fr 0.9fr auto auto; gap:8px; align-items:center;
+    margin-bottom:8px;
+  }
+  .variant-row input[type="text"], .variant-row input[type="number"]{
+    padding:8px 10px; border:1.5px solid var(--line); border-radius:var(--radius-s); font-size:13px; width:100%;
+  }
+  .variant-row input[type="checkbox"]{width:auto;}
+  .variant-row .remove-variant{color:#A3352F; font-size:12px; font-weight:600; white-space:nowrap;}
+  .checkbox-row input{width:auto;}
+
+  /* ---------- Orders ---------- */
+  .order-card{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px 20px; margin-bottom:14px;}
+  .order-head{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;}
+  .order-head .who{font-weight:600; font-size:15px;}
+  .order-head .when{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .order-head .amt{font-family:var(--font-display); font-size:19px; font-weight:600; color:var(--navy-deep);}
+  .order-meta{display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--ink-soft); margin:10px 0;}
+  .order-items{font-size:13.5px; color:var(--ink); margin:10px 0; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .order-items div{padding:3px 0;}
+  .order-foot{display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;}
+  .status-select{padding:8px 10px; border:1.5px solid var(--line); border-radius:var(--radius-s); font-size:13px; font-weight:600;}
+  .pickup-code-tag{background:var(--teal-light); color:var(--teal); font-weight:700; padding:4px 10px; border-radius:999px; font-size:12.5px;}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>Obey Your Needs — Admin</h1>
+    <p>Sign in to manage products and orders.</p>
+    <div id="configWarning" class="config-warning" style="display:none;">
+      The backend isn't connected yet — open this file and fill in <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> near the top of the script (see backend/SETUP.md).
+    </div>
+    <div id="loginError" class="error-msg"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="appScreen">
+  <header class="top">
+    <div class="wrap">
+      <div>
+        <div class="brand">Obey Your Needs — Admin</div>
+        <div class="sub" id="whoami"></div>
+      </div>
+      <button class="btn btn-outline btn-sm" id="signOutBtn" style="color:var(--sand); border-color:rgba(255,255,255,0.4);">Sign out</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div id="attentionBanner" class="attention-banner" style="display:none;"></div>
+  </div>
+
+  <div class="tabs">
+    <div class="wrap">
+      <button class="tab-btn active" data-tab="products">Products</button>
+      <button class="tab-btn" data-tab="orders">Orders</button>
+      <button class="tab-btn" data-tab="reviews">Reviews</button>
+    </div>
+  </div>
+
+  <div class="panel-area wrap">
+
+    <!-- Products tab -->
+    <div id="tabProducts">
+      <div class="section-head">
+        <h2>Products</h2>
+        <button class="btn btn-primary btn-sm" id="addProductBtn">+ Add product</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Sort</th><th></th></tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+        <div class="empty-note" id="productsEmptyNote" style="display:none;">No products yet — add your first one.</div>
+      </div>
+    </div>
+
+    <!-- Orders tab -->
+    <div id="tabOrders" style="display:none;">
+      <div class="section-head">
+        <h2>Orders</h2>
+        <select id="orderStatusFilter" class="status-select">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="packed">Packed</option>
+          <option value="out_for_delivery">Out for delivery</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div id="ordersList"></div>
+      <div class="empty-note" id="ordersEmptyNote" style="display:none;">No orders yet.</div>
+    </div>
+
+    <!-- Reviews tab -->
+    <div id="tabReviews" style="display:none;">
+      <div class="section-head">
+        <h2>Reviews</h2>
+        <select id="reviewStatusFilter" class="status-select">
+          <option value="pending">Pending approval</option>
+          <option value="approved">Approved</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+      <div id="reviewsList"></div>
+      <div class="empty-note" id="reviewsEmptyNote" style="display:none;">Nothing here.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= PRODUCT MODAL ================= -->
+<div class="modal-overlay" id="productModalOverlay">
+  <div class="modal">
+    <h3 id="productModalTitle">Add product</h3>
+    <div id="productModalError" class="error-msg"></div>
+    <form id="productForm">
+      <input type="hidden" id="pId">
+      <div class="field">
+        <label for="pName">Name</label>
+        <input type="text" id="pName" required placeholder="e.g. Fresh Croaker Fish">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="pCategory">Category</label>
+          <select id="pCategory" required>
+            <option value="fresh">Fresh Catch</option>
+            <option value="frozen">Frozen</option>
+            <option value="processed">Processed</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pType">Type</label>
+          <select id="pType" required>
+            <option value="fish">Fish</option>
+            <option value="shellfish">Shellfish</option>
+            <option value="meat">Meat &amp; Poultry</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="pPrice">Price (₦)</label>
+          <input type="number" id="pPrice" required min="0" step="1">
+        </div>
+        <div class="field">
+          <label for="pCompareAt">Was-price (optional)</label>
+          <input type="number" id="pCompareAt" min="0" step="1" placeholder="for a % off badge">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="pUnit">Unit</label>
+          <select id="pUnit">
+            <option value="kg">kg</option>
+            <option value="piece">piece</option>
+            <option value="pack">pack</option>
+            <option value="crate">crate</option>
+            <option value="bowl">bowl</option>
+            <option value="dozen">dozen</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pIcon">Icon</label>
+          <select id="pIcon">
+            <option value="FISH">Fish</option>
+            <option value="SHELL">Shrimp/shell</option>
+            <option value="SPIRAL">Snail/shell (spiral)</option>
+            <option value="OCTOPUS">Octopus</option>
+            <option value="CHICKEN">Chicken</option>
+            <option value="TURKEY">Turkey</option>
+            <option value="BEEF">Beef</option>
+            <option value="GOAT">Goat/mutton</option>
+            <option value="EGGS">Eggs</option>
+            <option value="LOBSTER">Lobster</option>
+            <option value="GIZZARD">Gizzard</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Bulk / size options (optional)</label>
+        <div class="hint" style="margin-bottom:10px;">If this product is sold in more than one size (e.g. single piece, half bag, full carton), add them here. The base price/unit above is used only when there are no size options.</div>
+        <div id="variantRows"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="addVariantRowBtn" style="margin-top:6px;">+ Add size option</button>
+      </div>
+      <div class="field">
+        <label for="pImageUrl">Photo URL (optional)</label>
+        <input type="text" id="pImageUrl" placeholder="Paste a photo link once you have one">
+      </div>
+      <div class="field">
+        <label for="pDescription">Description (optional — used if this product is Featured)</label>
+        <input type="text" id="pDescription" placeholder="A sentence or two about this product">
+      </div>
+      <div class="field">
+        <label for="pSortOrder">Sort order</label>
+        <input type="number" id="pSortOrder" value="0">
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="pInStock" checked>
+        <label for="pInStock" style="margin:0;">In stock</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="pFeatured">
+        <label for="pFeatured" style="margin:0;">Featured on homepage (only one should be featured at a time)</label>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Save product</button>
+        <button type="button" class="btn btn-outline" id="cancelProductBtn">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  // Catch literally anything that goes wrong anywhere on this page and show
+  // it on screen — no silent failures, ever.
+  function showFatalError(msg){
+    let banner = document.getElementById('fatalErrorBanner');
+    if(!banner){
+      banner = document.createElement('div');
+      banner.id = 'fatalErrorBanner';
+      banner.style.cssText = 'position:fixed; top:0; left:0; right:0; background:#A3352F; color:white; padding:12px 16px; font-size:13.5px; z-index:999; font-family:sans-serif;';
+      document.body.prepend(banner);
+    }
+    banner.textContent = 'Something went wrong: ' + msg;
+  }
+  window.addEventListener('error', e => showFatalError(e.message));
+  window.addEventListener('unhandledrejection', e => showFatalError((e.reason && e.reason.message) || String(e.reason)));
+
+  // Same config as index.html — keep these two in sync.
+  const SUPABASE_URL = 'https://udhbmiqsjverbkcidemr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_C4-A28ax2HO9KagteXfoeQ_EppTfUSX';
+
+  const configured = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 20;
+  let supabase = null;
+  let connectionError = null;
+
+  if(!configured){
+    document.getElementById('configWarning').style.display = 'block';
+  } else {
+    try{
+      if(!window.supabase){
+        throw new Error('The database library did not load — check your internet connection and reload this page.');
+      }
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch(err){
+      connectionError = err.message;
+      const w = document.getElementById('configWarning');
+      w.textContent = 'Could not connect: ' + connectionError + ' If reloading doesn\'t fix it, tell Claude the exact message shown here.';
+      w.style.display = 'block';
+    }
+  }
+
+  function money(n){ return '₦' + Math.round(n).toLocaleString('en-NG'); }
+
+  // ---------- Auth ----------
+  const loginScreen = document.getElementById('loginScreen');
+  const appScreen = document.getElementById('appScreen');
+  const loginError = document.getElementById('loginError');
+
+  async function checkSession(){
+    if(!supabase) return;
+    const { data } = await supabase.auth.getSession();
+    if(data.session){
+      showApp(data.session.user);
+    }
+  }
+
+  function showApp(user){
+    loginScreen.style.display = 'none';
+    appScreen.style.display = 'block';
+    document.getElementById('whoami').textContent = user.email;
+    loadProducts();
+    loadOrders();
+    loadReviews();
+    checkAttention();
+    if(!attentionPollTimer){
+      attentionPollTimer = setInterval(checkAttention, 30000); // re-check every 30s while this tab is open
+    }
+  }
+
+  let attentionPollTimer = null;
+  const ORIGINAL_TITLE = document.title;
+
+  async function checkAttention(){
+    if(!supabase) return;
+    const [ordersRes, reviewsRes] = await Promise.all([
+      supabase.from('orders').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+      supabase.from('reviews').select('id', { count: 'exact', head: true }).eq('approved', false)
+    ]);
+    const newOrders = ordersRes.count || 0;
+    const pendingReviews = reviewsRes.count || 0;
+    const banner = document.getElementById('attentionBanner');
+
+    if(newOrders === 0 && pendingReviews === 0){
+      banner.className = 'attention-banner clear';
+      banner.innerHTML = `✓ All caught up — no new orders or reviews waiting.`;
+      banner.style.display = 'flex';
+      document.title = ORIGINAL_TITLE;
+      return;
+    }
+
+    const parts = [];
+    if(newOrders > 0) parts.push(`<strong>${newOrders}</strong> new order${newOrders === 1 ? '' : 's'} need${newOrders === 1 ? 's' : ''} confirming`);
+    if(pendingReviews > 0) parts.push(`<strong>${pendingReviews}</strong> review${pendingReviews === 1 ? '' : 's'} awaiting approval`);
+    banner.className = 'attention-banner';
+    banner.innerHTML = `<span>${parts.join(' · ')}</span><button id="goToNewOrders">View orders</button>`;
+    banner.style.display = 'flex';
+    document.getElementById('goToNewOrders').addEventListener('click', () => {
+      document.querySelector('[data-tab="orders"]').click();
+      document.getElementById('orderStatusFilter').value = 'new';
+      loadOrders();
+      banner.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.title = `(${newOrders + pendingReviews}) ${ORIGINAL_TITLE}`;
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    loginError.classList.remove('show');
+    if(!supabase){
+      loginError.textContent = connectionError
+        ? 'Not connected: ' + connectionError
+        : 'Not connected to the database yet — check your internet connection and reload the page.';
+      loginError.classList.add('show');
+      return;
+    }
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Signing in…';
+    submitBtn.disabled = true;
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    try{
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('This is taking too long — the request may be blocked. Check your internet connection and try again.')), 12000));
+      const { data, error } = await Promise.race([
+        supabase.auth.signInWithPassword({ email, password }),
+        timeout
+      ]);
+      if(error){
+        loginError.textContent = error.message;
+        loginError.classList.add('show');
+        return;
+      }
+      showApp(data.user);
+    } catch(err){
+      loginError.textContent = err.message || 'Something unexpected happened. Please try again.';
+      loginError.classList.add('show');
+    } finally{
+      submitBtn.textContent = originalLabel;
+      submitBtn.disabled = false;
+    }
+  });
+
+  document.getElementById('signOutBtn').addEventListener('click', async () => {
+    if(supabase) await supabase.auth.signOut();
+    location.reload();
+  });
+
+  checkSession();
+
+  // ---------- Tabs ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tabProducts').style.display = btn.dataset.tab === 'products' ? 'block' : 'none';
+      document.getElementById('tabOrders').style.display = btn.dataset.tab === 'orders' ? 'block' : 'none';
+      document.getElementById('tabReviews').style.display = btn.dataset.tab === 'reviews' ? 'block' : 'none';
+    });
+  });
+
+  // ---------- Products ----------
+  const CAT_LABELS = {fresh:'Fresh Catch', frozen:'Frozen', processed:'Processed'};
+  let productsCache = [];
+
+  async function loadProducts(){
+    if(!supabase) return;
+    const { data, error } = await supabase.from('products').select('*').order('sort_order');
+    const tbody = document.getElementById('productsTableBody');
+    const emptyNote = document.getElementById('productsEmptyNote');
+    if(error || !data || !data.length){
+      tbody.innerHTML = '';
+      emptyNote.style.display = 'block';
+      return;
+    }
+    emptyNote.style.display = 'none';
+    productsCache = data;
+    tbody.innerHTML = data.map(p => {
+      const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
+      let priceCell;
+      if(hasVariants){
+        const prices = p.variants.map(v => Number(v.price));
+        const minP = Math.min(...prices), maxP = Math.max(...prices);
+        priceCell = minP === maxP ? `${money(minP)} <span style="color:var(--ink-soft); font-size:11.5px;">(${p.variants.length} size)</span>` : `${money(minP)}–${money(maxP)} <span style="color:var(--ink-soft); font-size:11.5px;">(${p.variants.length} sizes)</span>`;
+      } else {
+        priceCell = `${money(p.price)}${p.compare_at_price ? ` <span style="color:var(--ink-soft); text-decoration:line-through; font-size:12px;">${money(p.compare_at_price)}</span>` : ''} / ${p.unit}`;
+      }
+      return `
+      <tr>
+        <td>${p.name}</td>
+        <td>${CAT_LABELS[p.category] || p.category}</td>
+        <td>${priceCell}</td>
+        <td>
+          <span class="stock-toggle ${p.in_stock ? '' : 'out'}" data-id="${p.id}" data-stock="${p.in_stock}">
+            <span class="dot"></span> ${p.in_stock ? 'In stock' : 'Out of stock'}
+          </span>
+        </td>
+        <td>${p.sort_order}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn" data-edit="${p.id}" title="Edit">✎</button>
+            <button class="icon-btn" data-delete="${p.id}" title="Delete">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;}).join('');
+  }
+
+  document.getElementById('productsTableBody').addEventListener('click', async (e) => {
+    const toggle = e.target.closest('.stock-toggle');
+    if(toggle){
+      const id = toggle.dataset.id;
+      const newStock = toggle.dataset.stock !== 'true';
+      await supabase.from('products').update({ in_stock: newStock, updated_at: new Date().toISOString() }).eq('id', id);
+      loadProducts();
+      return;
+    }
+    const editId = e.target.closest('[data-edit]')?.dataset.edit;
+    if(editId){ openProductModal(productsCache.find(p => p.id === editId)); return; }
+    const deleteId = e.target.closest('[data-delete]')?.dataset.delete;
+    if(deleteId){
+      if(confirm('Delete this product? This can\'t be undone.')){
+        await supabase.from('products').delete().eq('id', deleteId);
+        loadProducts();
+      }
+    }
+  });
+
+  // ---------- Product modal ----------
+  const productModalOverlay = document.getElementById('productModalOverlay');
+  const productForm = document.getElementById('productForm');
+  const productModalError = document.getElementById('productModalError');
+
+  function makeVariantRow(v){
+    const row = document.createElement('div');
+    row.className = 'variant-row';
+    row.innerHTML = `
+      <input type="text" class="v-label" placeholder="e.g. Half bag (~5kg)" value="${v ? v.label.replace(/"/g,'&quot;') : ''}">
+      <input type="number" class="v-price" placeholder="Price" min="0" value="${v ? v.price : ''}">
+      <input type="number" class="v-compare" placeholder="Was-price" min="0" value="${v && v.compare_at_price ? v.compare_at_price : ''}">
+      <label style="display:flex; align-items:center; gap:4px; font-size:12px;"><input type="checkbox" class="v-stock" ${!v || v.in_stock !== false ? 'checked' : ''}> In stock</label>
+      <button type="button" class="remove-variant">Remove</button>
+    `;
+    row.dataset.variantId = v && v.id ? v.id : '';
+    row.querySelector('.remove-variant').addEventListener('click', () => row.remove());
+    return row;
+  }
+
+  document.getElementById('addVariantRowBtn').addEventListener('click', () => {
+    document.getElementById('variantRows').appendChild(makeVariantRow(null));
+  });
+
+  function openProductModal(product){
+    productModalError.classList.remove('show');
+    document.getElementById('productModalTitle').textContent = product ? 'Edit product' : 'Add product';
+    document.getElementById('pId').value = product ? product.id : '';
+    document.getElementById('pName').value = product ? product.name : '';
+    document.getElementById('pCategory').value = product ? product.category : 'fresh';
+    document.getElementById('pType').value = product ? (product.tags || []).find(t => ['fish','shellfish','meat'].includes(t)) || 'fish' : 'fish';
+    document.getElementById('pPrice').value = product ? product.price : '';
+    document.getElementById('pCompareAt').value = product && product.compare_at_price ? product.compare_at_price : '';
+    document.getElementById('pUnit').value = product ? product.unit : 'kg';
+    document.getElementById('pIcon').value = product ? (product.icon_svg || 'FISH') : 'FISH';
+    document.getElementById('pImageUrl').value = product && product.image_url ? product.image_url : '';
+    document.getElementById('pDescription').value = product && product.description ? product.description : '';
+    document.getElementById('pSortOrder').value = product ? product.sort_order : (productsCache.length + 1) * 10;
+    document.getElementById('pInStock').checked = product ? product.in_stock : true;
+    document.getElementById('pFeatured').checked = product ? !!product.featured : false;
+
+    const variantRows = document.getElementById('variantRows');
+    variantRows.innerHTML = '';
+    if(product && Array.isArray(product.variants)){
+      product.variants.forEach(v => variantRows.appendChild(makeVariantRow(v)));
+    }
+
+    productModalOverlay.classList.add('show');
+  }
+
+  document.getElementById('addProductBtn').addEventListener('click', () => openProductModal(null));
+  document.getElementById('cancelProductBtn').addEventListener('click', () => productModalOverlay.classList.remove('show'));
+  productModalOverlay.addEventListener('click', e => { if(e.target === productModalOverlay) productModalOverlay.classList.remove('show'); });
+
+  function slugify(name){
+    return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '_' + Math.random().toString(36).slice(2,6);
+  }
+
+  function collectVariants(){
+    const rows = document.querySelectorAll('#variantRows .variant-row');
+    const variants = [];
+    rows.forEach(row => {
+      const label = row.querySelector('.v-label').value.trim();
+      const priceRaw = row.querySelector('.v-price').value;
+      if(!label || !priceRaw) return; // skip incomplete rows rather than error out
+      const compareRaw = row.querySelector('.v-compare').value;
+      const inStock = row.querySelector('.v-stock').checked;
+      const id = row.dataset.variantId || slugify(label);
+      variants.push({
+        id,
+        label,
+        price: parseFloat(priceRaw),
+        compare_at_price: compareRaw ? parseFloat(compareRaw) : null,
+        in_stock: inStock
+      });
+    });
+    return variants;
+  }
+
+  productForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    productModalError.classList.remove('show');
+
+    const existingId = document.getElementById('pId').value;
+    const name = document.getElementById('pName').value.trim();
+    const category = document.getElementById('pCategory').value;
+    const type = document.getElementById('pType').value;
+    const price = parseFloat(document.getElementById('pPrice').value);
+    const compareAtRaw = document.getElementById('pCompareAt').value;
+    const unit = document.getElementById('pUnit').value;
+    const icon = document.getElementById('pIcon').value;
+    const imageUrl = document.getElementById('pImageUrl').value.trim();
+    const description = document.getElementById('pDescription').value.trim();
+    const sortOrder = parseInt(document.getElementById('pSortOrder').value, 10) || 0;
+    const inStock = document.getElementById('pInStock').checked;
+    const featured = document.getElementById('pFeatured').checked;
+    const variants = collectVariants();
+
+    const row = {
+      id: existingId || slugify(name),
+      name,
+      category,
+      tags: [category, type],
+      price,
+      compare_at_price: compareAtRaw ? parseFloat(compareAtRaw) : null,
+      unit,
+      in_stock: inStock,
+      icon_svg: icon,
+      description: description || null,
+      featured,
+      variants,
+      image_url: imageUrl || null,
+      sort_order: sortOrder,
+      updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabase.from('products').upsert(row);
+    if(error){
+      productModalError.textContent = error.message;
+      productModalError.classList.add('show');
+      return;
+    }
+    productModalOverlay.classList.remove('show');
+    loadProducts();
+  });
+
+  // ---------- Orders ----------
+  const STATUS_LABELS = {
+    new: 'New', confirmed: 'Confirmed', packed: 'Packed',
+    out_for_delivery: 'Out for delivery', completed: 'Completed', cancelled: 'Cancelled'
+  };
+
+  async function loadOrders(){
+    if(!supabase) return;
+    const filter = document.getElementById('orderStatusFilter').value;
+    let query = supabase.from('orders').select('*').order('created_at', { ascending: false });
+    if(filter) query = query.eq('status', filter);
+    const { data, error } = await query;
+    const list = document.getElementById('ordersList');
+    const emptyNote = document.getElementById('ordersEmptyNote');
+    if(error || !data || !data.length){
+      list.innerHTML = '';
+      emptyNote.style.display = 'block';
+      return;
+    }
+    emptyNote.style.display = 'none';
+    list.innerHTML = data.map(o => `
+      <div class="order-card">
+        <div class="order-head">
+          <div>
+            <div class="who">${o.customer_name} · ${o.phone}</div>
+            <div class="when">${new Date(o.created_at).toLocaleString('en-NG')}</div>
+          </div>
+          <div class="amt">${money(o.total)}</div>
+        </div>
+        <div class="order-meta">
+          <span>${o.fulfillment_method === 'pickup' ? 'Store Pickup' : `Delivery — ${o.lga || ''}, ${o.state || ''}`}</span>
+          <span>${o.payment_method === 'cod' ? 'Pay on delivery' : 'Bank transfer'}</span>
+          ${o.pickup_code ? `<span class="pickup-code-tag">Code: ${o.pickup_code}</span>` : ''}
+        </div>
+        ${o.fulfillment_method !== 'pickup' && o.address ? `<div class="order-meta"><span>${o.address}</span></div>` : ''}
+        <div class="order-items">
+          ${(o.items || []).map(it => `<div>${it.name} × ${it.qty} — ${money(it.price * it.qty)}</div>`).join('')}
+        </div>
+        <div class="order-foot">
+          <span style="font-size:13px; color:var(--ink-soft);">${o.delivery_date ? `Scheduled: ${o.delivery_date}${o.delivery_time ? ' — ' + o.delivery_time : ''}` : ''}</span>
+          <select class="status-select" data-order-id="${o.id}">
+            ${Object.entries(STATUS_LABELS).map(([val, label]) => `<option value="${val}" ${o.status === val ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('orderStatusFilter').addEventListener('change', loadOrders);
+
+  document.getElementById('ordersList').addEventListener('change', async (e) => {
+    const select = e.target.closest('[data-order-id]');
+    if(!select) return;
+    await supabase.from('orders').update({ status: select.value }).eq('id', select.dataset.orderId);
+    checkAttention();
+  });
+
+  // ---------- Reviews ----------
+  async function loadReviews(){
+    if(!supabase) return;
+    const filter = document.getElementById('reviewStatusFilter').value;
+    let query = supabase.from('reviews').select('*').order('created_at', { ascending: false });
+    if(filter === 'pending') query = query.eq('approved', false);
+    if(filter === 'approved') query = query.eq('approved', true);
+    const { data, error } = await query;
+    const list = document.getElementById('reviewsList');
+    const emptyNote = document.getElementById('reviewsEmptyNote');
+    if(error || !data || !data.length){
+      list.innerHTML = '';
+      emptyNote.style.display = 'block';
+      return;
+    }
+    emptyNote.style.display = 'none';
+    list.innerHTML = data.map(r => `
+      <div class="order-card">
+        <div class="order-head">
+          <div>
+            <div class="who">${r.customer_name} — ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+            <div class="when">${new Date(r.created_at).toLocaleString('en-NG')}</div>
+          </div>
+          <span class="pickup-code-tag" style="background:${r.approved ? 'var(--good-bg)' : '#FFF4E5'}; color:${r.approved ? 'var(--good)' : '#8A5A00'};">${r.approved ? 'Approved' : 'Pending'}</span>
+        </div>
+        <div class="order-items"><div>${r.comment}</div></div>
+        <div class="order-foot">
+          <div class="row-actions">
+            ${!r.approved ? `<button class="btn btn-primary btn-sm" data-approve="${r.id}">Approve</button>` : `<button class="btn btn-outline btn-sm" data-unapprove="${r.id}">Unapprove</button>`}
+            <button class="btn btn-danger btn-sm" data-delete-review="${r.id}">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('reviewStatusFilter').addEventListener('change', loadReviews);
+
+  document.getElementById('reviewsList').addEventListener('click', async (e) => {
+    const approveId = e.target.closest('[data-approve]')?.dataset.approve;
+    if(approveId){
+      await supabase.from('reviews').update({ approved: true }).eq('id', approveId);
+      loadReviews();
+      checkAttention();
+      return;
+    }
+    const unapproveId = e.target.closest('[data-unapprove]')?.dataset.unapprove;
+    if(unapproveId){
+      await supabase.from('reviews').update({ approved: false }).eq('id', unapproveId);
+      loadReviews();
+      checkAttention();
+      return;
+    }
+    const deleteId = e.target.closest('[data-delete-review]')?.dataset.deleteReview;
+    if(deleteId && confirm('Delete this review permanently?')){
+      await supabase.from('reviews').delete().eq('id', deleteId);
+      loadReviews();
+      checkAttention();
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>

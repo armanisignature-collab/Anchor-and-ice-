@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obey Your Needs — Premium Meat &amp; Seafood, Delivered</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+
+  :root{
+    --navy:#13203A;                       /* primary dark surface (buttons, header/footer) */
+    --navy-deep:#05080D;                  /* deepest void — page background */
+    --teal:#4C8DFF;                       /* secondary blue accent (links, live indicators) */
+    --teal-light:rgba(76,141,255,0.14);   /* translucent blue tint for badges */
+    --sand:#0C1526;                       /* secondary dark surface — alternating sections */
+    --sand-dark:#17233F;                  /* tertiary surface / hover state */
+    --paper:#0F1A2E;                      /* card & modal surface */
+    --buoy:#2E6FEE;                       /* primary CTA blue — the one confident accent */
+    --buoy-dark:#1E54C4;                  /* CTA hover/pressed */
+    --ink:#F2F5F9;                        /* primary text — soft white */
+    --ink-soft:#8CA0BF;                   /* secondary/muted text — steel blue-gray */
+    --line:rgba(255,255,255,0.09);        /* hairline borders on dark surfaces */
+    --radius-s:5px;
+    --radius-m:9px;
+    --font-display:'Fraunces', serif;
+    --font-body:'Public Sans', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-family:var(--font-display); color:var(--ink); font-weight:600; line-height:1.12;}
+  :focus-visible{outline:2px solid var(--buoy); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:var(--navy-deep); color:var(--ink);
+    font-size:13px; padding:8px 0;
+  }
+  .topbar .wrap{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+  .topbar a{color:var(--ink); opacity:0.85;}
+  .topbar a:hover{opacity:1;}
+
+  /* ---------- Header ---------- */
+  header.site{
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:40;
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:16px 0; gap:16px;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{width:34px; height:34px; flex-shrink:0;}
+  .brand-name{font-family:var(--font-display); font-size:21px; font-weight:600; color:var(--ink); letter-spacing:0.2px;}
+  nav.primary{display:flex; align-items:center; gap:30px;}
+  nav.primary a{font-size:15px; font-weight:500; color:var(--ink); padding:6px 2px; border-bottom:2px solid transparent;}
+  nav.primary a:hover{border-bottom-color:var(--buoy);}
+  .header-actions{display:flex; align-items:center; gap:14px;}
+  .icon-btn{position:relative; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%;}
+  .icon-btn:hover{background:var(--teal-light);}
+  .cart-count{
+    position:absolute; top:2px; right:2px; background:var(--buoy); color:white;
+    font-size:10px; font-weight:700; width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:var(--radius-s); font-weight:600; font-size:15px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--navy); color:var(--ink); border:1px solid var(--line);}
+  .btn-primary:hover{background:var(--sand-dark);}
+  .btn-buoy{background:var(--buoy); color:white; box-shadow:0 6px 24px -6px rgba(46,111,238,0.55);}
+  .btn-buoy:hover{background:var(--buoy-dark); box-shadow:0 8px 28px -4px rgba(46,111,238,0.7);}
+  .btn-outline{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline:hover{background:var(--ink); color:var(--navy-deep);}
+  .btn-sm{padding:9px 16px; font-size:13.5px;}
+  .menu-toggle{display:none; width:40px; height:40px; align-items:center; justify-content:center;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse 900px 560px at 12% -8%, rgba(46,111,238,0.22), transparent 62%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(76,141,255,0.10), transparent 55%),
+      linear-gradient(180deg, var(--navy-deep) 0%, var(--sand) 100%);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+    padding-top:64px; padding-bottom:56px;
+  }
+  .catch-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--teal-light); color:var(--teal); font-weight:600; font-size:13.5px;
+    padding:7px 14px; border-radius:999px; margin-bottom:22px;
+  }
+  .catch-tag .dot{width:7px; height:7px; border-radius:50%; background:#3DD68C;}
+  .hero h1{font-size:clamp(34px, 4.6vw, 54px); max-width:11.5ch; margin-bottom:20px;}
+  .hero p.lede{font-size:18px; color:var(--ink-soft); max-width:44ch; margin-bottom:32px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px;}
+  .hero-trust{display:flex; gap:24px; flex-wrap:wrap; color:var(--ink-soft); font-size:13.5px;}
+  .hero-trust span{display:flex; align-items:center; gap:7px;}
+  .hero-trust svg{width:16px; height:16px; stroke:var(--teal);}
+  .hero-trust .live{color:var(--ink); font-weight:600;}
+  .hero-trust .live .dot{width:8px; height:8px; border-radius:50%; background:#3DD68C; flex-shrink:0; animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.35;}}
+
+  .hero-art{position:relative;}
+  .catch-card{
+    background:var(--navy-deep); border-radius:var(--radius-m); padding:26px;
+    color:var(--ink); box-shadow:0 24px 48px -20px rgba(14,36,49,0.45);
+  }
+  .catch-card h3{color:var(--ink); font-size:15px; font-weight:600; font-family:var(--font-body); margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;}
+  .catch-card h3 em{font-style:normal; color:#8FB6BE; font-weight:500; font-size:12.5px;}
+  .catch-item{display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid rgba(255,255,255,0.12);}
+  .catch-item:first-of-type{border-top:none;}
+  .catch-item svg{width:30px; height:30px; flex-shrink:0; stroke:var(--ink); fill:none;}
+  .catch-item .name{font-weight:600; font-size:14.5px;}
+  .catch-item .meta{font-size:12.5px; color:#9FC2C9;}
+  .catch-item .price{margin-left:auto; font-weight:700; font-size:14.5px;}
+
+  /* ---------- Section shell ---------- */
+  section{padding:72px 0;}
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:36px; flex-wrap:wrap;}
+  .section-head h2{font-size:clamp(26px, 3vw, 34px);}
+  .section-head p{color:var(--ink-soft); font-size:15.5px; max-width:46ch;}
+
+  /* ---------- Product grid ---------- */
+  .filters-row{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:30px; flex-wrap:wrap;}
+  .count-badge{
+    display:inline-block; vertical-align:middle; font-family:var(--font-body); font-size:13px; font-weight:700;
+    color:var(--ink-soft); background:var(--sand); padding:4px 11px; border-radius:999px; margin-left:10px;
+  }
+  .search-field{
+    position:relative; max-width:440px; margin-bottom:22px;
+  }
+  .search-field svg{position:absolute; left:14px; top:50%; transform:translateY(-50%); width:17px; height:17px; stroke:var(--ink-soft);}
+  .search-field input{
+    width:100%; padding:12px 14px 12px 40px; border:1.5px solid var(--line); border-radius:var(--radius-s);
+    font-family:inherit; font-size:14.5px; background:var(--paper);
+  }
+  .search-field input:focus-visible{border-color:var(--teal);}
+  .filters{display:flex; gap:10px; flex-wrap:wrap;}
+  .sort-field{display:flex; align-items:center; gap:8px;}
+  .sort-field label{font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap;}
+  .sort-field select{padding:8px 10px; border:1.5px solid var(--line); border-radius:var(--radius-s); font-family:inherit; font-size:13.5px; background:var(--paper);}
+  .filter-chip{
+    padding:9px 16px; border-radius:999px; border:1.5px solid var(--line); font-size:13.5px; font-weight:600;
+    color:var(--ink-soft); background:var(--paper); transition:all .15s ease;
+  }
+  .filter-chip:hover{border-color:var(--teal);}
+  .filter-chip.active{background:var(--buoy); border-color:var(--buoy); color:var(--ink);}
+  .discount-badge{
+    position:absolute; top:12px; right:12px; font-size:11px; font-weight:700; padding:5px 9px; border-radius:999px;
+    background:var(--buoy); color:white;
+  }
+  .bulk-badge{
+    position:absolute; top:12px; right:12px; font-size:11px; font-weight:700; padding:5px 9px; border-radius:999px;
+    background:var(--teal); color:white; text-transform:uppercase; letter-spacing:0.4px;
+  }
+  .compare-price{text-decoration:line-through; color:var(--ink-soft); font-weight:500; font-size:12.5px; margin-right:4px;}
+  .price-range{font-size:11.5px; color:var(--ink-soft); font-weight:600; margin-left:6px;}
+
+  /* ---------- Variant picker modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(14,36,49,0.5); opacity:0; pointer-events:none;
+    transition:opacity .2s ease; z-index:70; display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.show{opacity:1; pointer-events:auto;}
+  .variant-modal{
+    background:var(--paper); border-radius:var(--radius-m); max-width:420px; width:100%;
+    max-height:80vh; overflow-y:auto; padding:0;
+  }
+  .variant-modal-head{
+    display:flex; justify-content:space-between; align-items:center; padding:20px 22px;
+    border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper);
+  }
+  .variant-modal-head h3{font-size:18px;}
+  .variant-option{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding:16px 22px; border-bottom:1px solid var(--line);
+  }
+  .variant-option:last-child{border-bottom:none;}
+  .variant-option .label{font-weight:600; font-size:14.5px;}
+  .variant-option .price{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+  .variant-option .price .compare-price{margin-right:6px;}
+  .variant-option button{
+    background:var(--buoy); color:white; padding:9px 18px; border-radius:var(--radius-s);
+    font-weight:600; font-size:13.5px; white-space:nowrap;
+  }
+  .variant-option button:hover{background:var(--buoy-dark);}
+  .variant-option.out button{background:var(--sand-dark); color:var(--ink-soft); cursor:not-allowed;}
+  .variant-option.out .label{color:var(--ink-soft);}
+
+  .product-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:22px;}
+  .grid-empty{grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:15px;}
+
+  /* ---------- Featured product ---------- */
+  .featured{background:var(--navy-deep);}
+  .featured-card{display:grid; grid-template-columns:0.9fr 1.1fr; gap:0; border-radius:var(--radius-m); overflow:hidden;}
+  .featured-media{background:var(--teal-light); display:flex; align-items:center; justify-content:center; padding:40px; min-height:260px;}
+  .featured-media svg{width:70%; stroke:var(--ink); fill:none;}
+  .featured-text{background:var(--paper); padding:36px;}
+  .featured-tag{display:inline-block; background:var(--teal-light); color:var(--teal); font-weight:700; font-size:12px; padding:5px 12px; border-radius:999px; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.4px;}
+  .featured-text h2{font-size:26px; margin-bottom:12px;}
+  .featured-text p{color:var(--ink-soft); font-size:15px; line-height:1.6; margin-bottom:18px; max-width:44ch;}
+  .featured-price{font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--ink); margin-bottom:20px;}
+  .featured-actions{display:flex; gap:12px; flex-wrap:wrap;}
+  .featured-actions .btn{width:auto; padding:12px 22px;}
+  @media (max-width:820px){
+    .featured-card{grid-template-columns:1fr;}
+    .featured-media{min-height:200px;}
+  }
+  .card{
+    border:1px solid var(--line); border-radius:var(--radius-m); background:var(--paper);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .card-media{
+    aspect-ratio:1/0.82; background:var(--sand); display:flex; align-items:center; justify-content:center;
+    position:relative; padding:22px;
+  }
+  .card-media svg{width:100%; height:100%; stroke:var(--ink); fill:none;}
+  .stock-badge{
+    position:absolute; top:12px; left:12px; font-size:11px; font-weight:700; padding:5px 10px; border-radius:999px;
+  }
+  .stock-badge.in{background:rgba(61,214,140,0.14); color:#3DD68C;}
+  .stock-badge.out{background:rgba(255,107,107,0.14); color:#FF6B6B;}
+  .card-body{padding:16px 18px 18px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .card-cat{font-size:11.5px; color:var(--teal); font-weight:700;}
+  .card-name{font-family:var(--font-display); font-size:17px; font-weight:600; color:var(--ink);}
+  .card-price{font-size:15px; font-weight:700; margin-top:2px;}
+  .card-price small{font-weight:500; color:var(--ink-soft); font-size:12.5px;}
+  .card-actions{margin-top:auto; padding-top:12px;}
+  .add-btn{
+    width:100%; padding:10px; border-radius:var(--radius-s); background:var(--buoy); color:white;
+    font-weight:600; font-size:14px; transition:background .15s ease;
+  }
+  .add-btn:hover{background:var(--buoy-dark);}
+  .add-btn[disabled]{background:var(--sand-dark); color:var(--ink-soft); cursor:not-allowed;}
+  .wa-quick-btn{
+    display:block; text-align:center; margin-top:8px; font-size:12.5px; font-weight:600;
+    color:var(--teal); padding:4px;
+  }
+  .wa-quick-btn:hover{color:var(--ink);}
+
+  /* ---------- How it works ---------- */
+  .how{background:var(--navy-deep); color:var(--ink);}
+  .how .section-head h2{color:var(--ink);}
+  .how .section-head p{color:#9FC2C9;}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .step{padding:28px 24px; border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-m);}
+  .step .num{font-family:var(--font-display); font-size:34px; color:var(--buoy); margin-bottom:14px;}
+  .step h3{color:var(--ink); font-size:19px; margin-bottom:8px;}
+  .step p{color:#A9C7CD; font-size:14.5px;}
+
+  /* ---------- Delivery calculator ---------- */
+  .calc{background:var(--sand);}
+  .calc-box{
+    display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:18px; align-items:end;
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m); padding:26px;
+    max-width:980px;
+  }
+  .field label{display:block; font-size:13px; font-weight:600; margin-bottom:8px; color:var(--ink-soft);}
+  .field select, .field input{
+    width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:var(--radius-s);
+    font-family:inherit; font-size:14.5px; background:var(--paper);
+  }
+  .calc-result{text-align:left;}
+  .calc-result .fee{font-family:var(--font-display); font-size:26px; color:var(--ink); font-weight:600;}
+  .calc-result .label{font-size:12px; color:var(--ink-soft); font-weight:600;}
+
+  /* ---------- About / sourcing ---------- */
+  .about .wrap{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;}
+  .about h2{margin-bottom:16px;}
+  .about h3{font-size:19px; margin:26px 0 10px;}
+  .about p{color:var(--ink-soft); font-size:15.5px; margin-bottom:16px; max-width:48ch;}
+  .about p strong{color:var(--ink); font-weight:700;}
+  .about-badges{display:flex; gap:14px; margin-top:24px; flex-wrap:wrap;}
+  .about-badge{
+    display:flex; gap:10px; align-items:center; border:1px solid var(--line); border-radius:var(--radius-s); padding:12px 14px;
+    font-size:13px; font-weight:600; color:var(--ink);
+  }
+  .about-badge svg{width:20px; height:20px; stroke:var(--teal); flex-shrink:0;}
+  .about-art{background:var(--teal-light); border-radius:var(--radius-m); padding:40px;}
+
+  /* ---------- Reviews ---------- */
+  .reviews{background:var(--sand);}
+  .review-form-wrap{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:24px; margin-bottom:28px;
+  }
+  .review-form-wrap textarea{
+    width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:var(--radius-s);
+    font-family:inherit; font-size:14.5px; background:var(--paper); resize:vertical; min-height:80px;
+  }
+  .star-picker{display:flex; gap:4px;}
+  .star-picker button{
+    background:none; border:none; font-size:28px; line-height:1; color:var(--line); padding:2px;
+  }
+  .star-picker button.active{color:#E4A72E;}
+  .review-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
+  .review-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m); padding:22px;
+  }
+  .review-card .stars{color:#E4A72E; font-size:15px; letter-spacing:2px; margin-bottom:10px;}
+  .review-card .comment{font-size:14.5px; color:var(--ink); line-height:1.55; margin-bottom:14px;}
+  .review-card .who{font-size:13px; font-weight:600; color:var(--ink);}
+  .review-card .when{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+  .review-empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:14.5px;}
+  @media (max-width:820px){ .review-grid{grid-template-columns:1fr;} }
+  .about-art svg{width:100%; stroke:var(--ink); fill:none;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--navy-deep); color:#B9D2D7; padding:56px 0 28px;}
+  .footer-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr 1.1fr; gap:36px; margin-bottom:40px;}
+  footer h4{color:var(--ink); font-size:14px; margin-bottom:16px; font-weight:600;}
+  footer .brand-name{color:var(--ink);}
+  footer p.tag{font-size:13.5px; color:#8FADB4; margin-top:10px; max-width:32ch;}
+  .social-row{display:flex; gap:10px; margin-top:18px;}
+  .social-icon{
+    width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.18);
+    display:flex; align-items:center; justify-content:center; color:#B9D2D7; transition:all .15s ease;
+  }
+  .social-icon svg{width:16px; height:16px;}
+  .social-icon:hover{background:var(--buoy); border-color:var(--buoy); color:white;}
+  footer li{margin-bottom:9px; font-size:13.5px;}
+  footer a:hover{color:var(--ink);}
+  .foot-bottom{
+    border-top:1px solid rgba(255,255,255,0.12); padding-top:22px; display:flex; justify-content:space-between;
+    font-size:12.5px; color:#7FA0A7; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------- Cart drawer ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(14,36,49,0.5); opacity:0; pointer-events:none;
+    transition:opacity .2s ease; z-index:60;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:400px; max-width:92vw; background:var(--paper);
+    transform:translateX(100%); transition:transform .25s ease; z-index:61; display:flex; flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{padding:22px 22px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;}
+  .drawer-head h3{font-size:19px;}
+  .drawer-body{flex:1; overflow-y:auto; padding:18px 22px;}
+  .drawer-empty{color:var(--ink-soft); font-size:14px; padding:30px 0; text-align:center;}
+  .cart-line{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line);}
+  .cart-line svg{width:44px; height:44px; flex-shrink:0; stroke:var(--ink); fill:none;}
+  .cart-line .info{flex:1;}
+  .cart-line .info .n{font-weight:600; font-size:14.5px;}
+  .cart-line .info .p{font-size:13px; color:var(--ink-soft);}
+  .qty{display:flex; align-items:center; gap:8px; margin-top:6px;}
+  .qty button{width:22px; height:22px; border:1px solid var(--line); border-radius:4px; font-size:13px;}
+  .drawer-foot{padding:20px 22px; border-top:1px solid var(--line);}
+  .drawer-foot .row{display:flex; justify-content:space-between; font-size:14.5px; margin-bottom:14px;}
+  .drawer-foot .row.total{font-weight:700; font-size:17px; color:var(--ink);}
+  .drawer-foot .btn{width:100%; margin-bottom:10px;}
+
+  /* ---------- WhatsApp float ---------- */
+  .wa-float{
+    position:fixed; bottom:22px; right:22px; z-index:50;
+    background:#25D366; width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px -8px rgba(0,0,0,0.35);
+  }
+  .wa-float svg{width:28px; height:28px; fill:white;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .about .wrap{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .calc-box{grid-template-columns:1fr;}
+  }
+  @media (max-width:720px){
+    nav.primary, .header-actions .btn-outline{display:none;}
+    .menu-toggle{display:flex;}
+    .steps{grid-template-columns:1fr;}
+    .product-grid{grid-template-columns:1fr 1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- Checkout view ---------- */
+  #viewCheckout{display:none;}
+  .back-link{font-size:13.5px; font-weight:600; color:var(--ink-soft); display:inline-flex; align-items:center; gap:6px; font-family:inherit;}
+  .back-link:hover{color:var(--ink);}
+  .checkout-title{padding:18px 0 6px;}
+  .checkout-title p{color:var(--ink-soft); font-size:15px; margin-top:6px;}
+  .layout{display:grid; grid-template-columns:1.3fr 1fr; gap:36px; padding:24px 0 80px; align-items:start;}
+  .panel{border:1px solid var(--line); border-radius:var(--radius-m); background:var(--paper); padding:26px;}
+  .panel + .panel{margin-top:22px;}
+  .panel h2{font-size:18px; margin-bottom:18px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field textarea{resize:vertical; min-height:70px;}
+  .field textarea[disabled]{background:var(--sand); color:var(--ink-soft); cursor:not-allowed;}
+  .pay-options{display:flex; flex-direction:column; gap:10px;}
+  .pay-option{
+    border:1.5px solid var(--line); border-radius:var(--radius-s); padding:14px 16px;
+    display:flex; align-items:flex-start; gap:12px; cursor:pointer;
+  }
+  .pay-option.selected{border-color:var(--buoy); background:var(--teal-light);}
+  .pay-option input{margin-top:3px;}
+  .pay-option .t{font-weight:600; font-size:14.5px;}
+  .pay-option .d{font-size:13px; color:var(--ink-soft); margin-top:3px;}
+  .bank-details{
+    margin-top:14px; padding:14px 16px; background:var(--sand); border-radius:var(--radius-s);
+    font-size:13.5px; display:none;
+  }
+  .bank-details.show{display:block;}
+  .bank-details div{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--line);}
+  .bank-details div:last-child{border-bottom:none;}
+  .summary-line{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .summary-line:last-of-type{border-bottom:none;}
+  .summary-line svg{width:38px; height:38px; stroke:var(--ink); fill:none; flex-shrink:0;}
+  .summary-line .n{font-weight:600; font-size:14px;}
+  .summary-line .q{font-size:12.5px; color:var(--ink-soft);}
+  .summary-line .amt{margin-left:auto; font-weight:600; font-size:14px; white-space:nowrap;}
+  .row{display:flex; justify-content:space-between; font-size:14.5px; padding:8px 0;}
+  .row.total{font-weight:700; font-size:18px; color:var(--ink); border-top:1px solid var(--line); margin-top:8px; padding-top:14px;}
+  .empty-state{padding:70px 0; text-align:center;}
+  .empty-state p{color:var(--ink-soft); margin:12px 0 22px;}
+  .empty-state .btn{width:auto; padding:12px 26px;}
+  .confirm-state{padding:60px 0; text-align:center; display:none;}
+  .confirm-state.show{display:block;}
+  .confirm-state .mark{width:56px; height:56px; border-radius:50%; background:rgba(61,214,140,0.14); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;}
+  .confirm-state .mark svg{width:26px; height:26px; stroke:#3DD68C;}
+  .confirm-state h2{margin-bottom:8px;}
+  .confirm-state p{color:var(--ink-soft); max-width:44ch; margin:0 auto 22px;}
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+  }
+
+  /* ---------- Mobile nav drawer ---------- */
+  .drawer-left{left:0; right:auto; transform:translateX(-100%);}
+  .drawer-left.open{transform:translateX(0);}
+  .nav-drawer-links{padding:8px 22px;}
+  .nav-drawer-links a{display:block; padding:14px 0; font-size:16px; font-weight:600; color:var(--ink); border-bottom:1px solid var(--line);}
+  .nav-drawer-links a:hover{color:var(--buoy);}
+  .nav-drawer-foot{padding:18px 22px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;}
+
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div class="wrap">
+    <span>Delivering across Lagos · Order by 2pm for same-day delivery</span>
+    <a href="tel:+2347038112671">Call us: 0703 811 2671</a>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="site">
+  <div class="wrap nav-row">
+    <a class="brand" href="#" id="logoLink">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 24c4-10 12-16 16-16s12 6 16 16c-4 6-10 9-16 9S8 30 4 24Z" stroke="#F2F5F9" stroke-width="1.8"/>
+        <circle cx="26" cy="19" r="1.6" fill="#F2F5F9"/>
+        <path d="M4 24c3 2 7 3 16 3s13-1 16-3" stroke="#2E6FEE" stroke-width="1.8"/>
+      </svg>
+      <span class="brand-name">Obey Your Needs</span>
+    </a>
+    <nav class="primary">
+      <a href="#shop" data-nav-link>Shop</a>
+      <a href="#bulk" data-nav-link>Bulk</a>
+      <a href="#how" data-nav-link>How it works</a>
+      <a href="#about" data-nav-link>Sourcing</a>
+      <a href="#contact" data-nav-link>Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-outline btn-sm" href="#contact" data-nav-link>Contact</a>
+      <button class="icon-btn" id="cartToggle" aria-label="Open cart">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F2F5F9" stroke-width="1.8"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1.4" fill="#F2F5F9"/><circle cx="18" cy="21" r="1.4" fill="#F2F5F9"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="menu-toggle" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F2F5F9" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="viewHome">
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="catch-tag"><span class="dot"></span> Today's catch is in — 9 items in stock</span>
+      <h1>Fresh seafood and meat, delivered to your door.</h1>
+      <p class="lede">Line-caught fish, wild-caught shellfish, and hand-selected meat and poultry — ordered online, packed fresh, and on your doorstep the same day.</p>
+      <div class="hero-ctas">
+        <a href="#shop" class="btn btn-primary">Shop best sellers</a>
+        <a href="#" id="waHeroBtn" class="btn btn-buoy">Order on WhatsApp</a>
+      </div>
+      <div class="hero-trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg> Sustainably sourced</span>
+        <span class="live"><span class="dot"></span> Active now · avg. 1–3 hr delivery</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg> No minimum order</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="catch-card">
+        <h3>Today's catch <em>updated 6:40am</em></h3>
+        <div class="catch-item">
+          <svg viewBox="0 0 40 24"><path d="M2 12c6-8 16-10 22-10 5 8 10 8 14 2-2 10-9 12-14 20-6 0-16-2-22-12Z"/><circle cx="10" cy="11" r="1" fill="#F2F5F9"/></svg>
+          <div><div class="name">Live Catfish</div><div class="meta">Fresh · caught this morning</div></div>
+          <div class="price">₦4,000/kg</div>
+        </div>
+        <div class="catch-item">
+          <svg viewBox="0 0 40 24"><path d="M8 4c8 2 14 8 16 16-6 0-14-4-18-10-2-3-1-5 2-6Z"/></svg>
+          <div><div class="name">Fresh Shrimp</div><div class="meta">Fresh · limited stock today</div></div>
+          <div class="price">₦8,000/kg</div>
+        </div>
+        <div class="catch-item">
+          <svg viewBox="0 0 40 24"><path d="M20 4c-6 0-10 5-10 9 0 6 5 9 10 9s10-3 10-9c0-4-4-9-10-9Z"/><path d="M8 10 3 6M32 10l5-4M8 16l-6 2M32 16l6 2"/></svg>
+          <div><div class="name">Fresh Crab</div><div class="meta">Fresh · whole, cleaned</div></div>
+          <div class="price">₦6,000/kg</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SHOP ================= -->
+<section id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Shop the market <span class="count-badge" id="productCount">26 items</span></h2>
+        <p>Fresh, frozen, and processed seafood — plus meat, poultry, and eggs — all reflecting what's actually in stock right now.</p>
+      </div>
+    </div>
+
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="productSearch" placeholder="Search products — e.g. crab, chicken, snapper...">
+    </div>
+
+    <div class="filters-row">
+      <div class="filters" id="filters">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="fresh">Fresh Catch</button>
+        <button class="filter-chip" data-filter="frozen">Frozen</button>
+        <button class="filter-chip" data-filter="processed">Processed</button>
+        <button class="filter-chip" data-filter="fish">Fish</button>
+        <button class="filter-chip" data-filter="shellfish">Crustaceans &amp; Shellfish</button>
+        <button class="filter-chip" data-filter="meat">Meat &amp; Poultry</button>
+      </div>
+      <div class="sort-field">
+        <label for="sortSelect">Sort by</label>
+        <select id="sortSelect">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="product-grid" id="productGrid"><!-- injected by JS --></div>
+  </div>
+</section>
+
+<!-- ================= BULK ORDERS ================= -->
+<section id="bulk" style="display:none; background:var(--sand);">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Shop in bulk</h2>
+        <p>Buying for a party, a freezer stock-up, or to resell? These come in bigger sizes — pick a quantity that fits.</p>
+      </div>
+    </div>
+    <div class="product-grid" id="bulkGrid"><!-- injected by JS --></div>
+  </div>
+</section>
+
+<!-- ================= FEATURED PRODUCT ================= -->
+<section class="featured" id="featuredSection" style="display:none;">
+  <div class="wrap">
+    <div class="featured-card">
+      <div class="featured-media">
+        <svg id="featuredIcon" viewBox="0 0 100 68" stroke-width="2"></svg>
+        <img id="featuredImg" style="display:none; width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="featured-text">
+        <span class="featured-tag">From the catch</span>
+        <h2 id="featuredName"></h2>
+        <p id="featuredDesc"></p>
+        <div class="featured-price" id="featuredPrice"></div>
+        <div class="featured-actions">
+          <button class="btn btn-primary" id="featuredAddBtn">Add to cart</button>
+          <a href="#" id="featuredWaBtn" class="btn btn-outline">Order via WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>How it works</h2>
+        <p>Three steps between the dock and your kitchen.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>You order</h3>
+        <p>Pick what you want from today's stock and choose a delivery window — online or straight through WhatsApp.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>We package</h3>
+        <p>Every order is hand-packed in insulated, leak-proof boxes with fresh ice within the hour.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Fast delivery</h3>
+        <p>Out for delivery same day for orders before 2pm, still packed on ice when it reaches your door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DELIVERY CALCULATOR ================= -->
+<section class="calc">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Check your delivery fee</h2>
+        <p>Select your state and local government area — flat rates across Lagos, confirmed by us for other states.</p>
+      </div>
+    </div>
+    <div class="calc-box">
+      <div class="field">
+        <label for="calcState">State</label>
+        <select id="calcState">
+          <option value="">Select state</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="calcLga">Local Government Area</label>
+        <select id="calcLga" disabled>
+          <option value="">Select state first</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="orderValue">Approx. order value</label>
+        <input type="number" id="orderValue" placeholder="₦0" min="0">
+      </div>
+      <div class="calc-result">
+        <div class="label">Estimated delivery fee</div>
+        <div class="fee" id="feeOutput">Select state &amp; LGA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT / SOURCING ================= -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-text">
+      <h2>About Obey Your Needs</h2>
+      <p>At Obey Your Needs, we believe that exceptional meals start with exceptional ingredients. We are a modern, quality-driven online market dedicated to bringing the finest harvest of land and water directly to your kitchen.</p>
+      <p>Whether you're preparing a comforting weeknight dinner, firing up the grill for a weekend gathering, or stocking your freezer with the essentials, we make premium dining effortless and accessible.</p>
+
+      <h3>Our Standard of Quality</h3>
+      <p><strong>From the water:</strong> Sourced from trusted, pristine waters, our selection of fish and seafood delivers uncompromising ocean-fresh flavor, texture, and purity.</p>
+      <p><strong>From the farm:</strong> Our wholesome poultry and specialty meats are carefully handpicked from reliable, ethical sources to guarantee tenderness, rich flavor, and top-tier nutrition in every single cut.</p>
+
+      <h3>Why Choose Us?</h3>
+      <p><strong>Uncompromising Hygiene:</strong> We handle all our meats, fish, and poultry under the strictest safety and cleanliness standards, ensuring they arrive at your doorstep fresh and wholesome.</p>
+      <p><strong>Seamless Convenience:</strong> Skip the hassle of traditional markets. Order online with ease, and let us deliver restaurant-quality proteins right to your door.</p>
+
+      <p style="color:var(--ink); font-weight:600;">Taste the difference true quality makes. Welcome to better cooking with Obey Your Needs.</p>
+
+      <div class="about-badges">
+        <div class="about-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg> Licensed local suppliers</div>
+        <div class="about-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="9"/></svg> Caught within 24–48 hrs</div>
+        <div class="about-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2v20M6 8l6-6 6 6M6 16l6 6 6-6"/></svg> Cold-chain delivery</div>
+      </div>
+    </div>
+    <div class="about-art">
+      <svg viewBox="0 0 300 200"><path d="M0 140c30-20 60 20 90 0s60-20 90 0 60-20 90 0" stroke-width="2"/><path d="M0 160c30-16 60 16 90 0s60-16 90 0 60-16 90 0" stroke-width="2" opacity="0.5"/><circle cx="150" cy="70" r="26" stroke-width="2"/><path d="M150 44v-14M150 96v14M124 70h-14M176 70h14" stroke-width="2"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>What customers say</h2>
+        <p>Real feedback from real orders — nothing here is written by us.</p>
+      </div>
+      <button class="btn btn-outline btn-sm" id="showReviewFormBtn">Leave a review</button>
+    </div>
+
+    <div class="review-form-wrap" id="reviewFormWrap" style="display:none;">
+      <form id="reviewForm">
+        <div class="field-row">
+          <div class="field">
+            <label for="reviewName">Your name</label>
+            <input type="text" id="reviewName" required placeholder="e.g. Chidinma O.">
+          </div>
+          <div class="field">
+            <label>Rating</label>
+            <div class="star-picker" id="starPicker">
+              <button type="button" data-star="1">★</button>
+              <button type="button" data-star="2">★</button>
+              <button type="button" data-star="3">★</button>
+              <button type="button" data-star="4">★</button>
+              <button type="button" data-star="5">★</button>
+            </div>
+            <input type="hidden" id="reviewRating" value="0" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="reviewComment">Your review</label>
+          <textarea id="reviewComment" required placeholder="How was your order?"></textarea>
+        </div>
+        <div id="reviewFormMsg" class="hint" style="display:none; margin-bottom:12px;"></div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn btn-primary btn-sm" style="width:auto; padding:10px 20px;">Submit review</button>
+          <button type="button" class="btn btn-outline btn-sm" id="cancelReviewBtn" style="width:auto; padding:10px 20px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="review-grid" id="reviewGrid"></div>
+    <div class="review-empty" id="reviewEmpty" style="display:none;">No reviews yet — be the first to leave one.</div>
+  </div>
+</section>
+
+<!-- ================= FOOTER / CONTACT ================= -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-name" style="font-family:var(--font-display); font-size:20px;">Obey Your Needs</span>
+        <p class="tag">Fresh, frozen, and processed seafood, meat, and poultry, sourced locally and delivered across Lagos, with select other states on request.</p>
+        <div class="social-row">
+          <a href="https://facebook.com/obeyyourneeds" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>
+          </a>
+          <a href="https://instagram.com/obeyyourneeds" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+          <a href="https://twitter.com/obeyyourneeds" target="_blank" rel="noopener" aria-label="X (Twitter)" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 3H21l-6.7 7.7L22.2 21H16l-4.9-6.4L5.5 21H2.8l7.2-8.2L2.2 3H8.6l4.4 5.9L18.3 3Zm-1.1 16.1h1.5L7 4.8H5.4l11.8 14.3Z"/></svg>
+          </a>
+          <a href="https://wa.me/2347038112671" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.4 2 12c0 1.8.5 3.5 1.4 5L2 22l5.2-1.4c1.5.8 3.1 1.3 4.8 1.3 5.5 0 10-4.4 10-10S17.5 2 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 0 1 3.8 12c0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-1.4-.7-2.3-1.2-3.3-2.8-.2-.4.2-.4.6-1.2.1-.1.05-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.1 1.6 2.5 4 3.5.6.2 1 .4 1.3.5.6.2 1.1.1 1.5-.1.5-.2 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#shop">Fresh catch</a></li>
+          <li><a href="#shop">Frozen</a></li>
+          <li><a href="#shop">Shellfish</a></li>
+          <li><a href="#shop">Meat &amp; poultry</a></li>
+          <li><a href="#shop">Best sellers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about" data-nav-link>Our sourcing</a></li>
+          <li><a href="#how" data-nav-link>How delivery works</a></li>
+          <li><a href="#" id="policyLink">Return &amp; refund policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li>Daily, 8:00 AM – 9:30 PM</li>
+          <li><a href="tel:+2347038112671">0703 811 2671</a></li>
+          <li><a href="mailto:hello@obeyyourneeds.com">hello@obeyyourneeds.com</a></li>
+          <li><a href="#" id="waFootBtn">Message us on WhatsApp</a></li>
+          <li><a href="#" id="trackOrderLink">Track your order</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Obey Your Needs</span>
+      <span>No. 5, Orofin Street, Maza-Maza, Lagos</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<div id="viewCheckout">
+<div class="wrap">
+  <button type="button" class="back-link" id="checkoutBackLink" style="background:none; border:none; cursor:pointer; margin-top:20px;">&larr; Back to shop</button>
+  <div class="checkout-title">
+    <h1>Checkout</h1>
+    <p>Tell us where and when to bring your order — no account needed.</p>
+  </div>
+</div>
+
+<!-- Empty cart state -->
+<div class="wrap" id="emptyState" style="display:none;">
+  <div class="empty-state">
+    <h2>Your cart is empty</h2>
+    <p>Add something fresh from today's catch before checking out.</p>
+    <button type="button" class="btn btn-primary" id="emptyBackBtn">Back to shop</button>
+  </div>
+</div>
+
+<!-- Order confirmed state -->
+<div class="wrap">
+  <div class="confirm-state" id="confirmState">
+    <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
+    <h2 id="confirmHeading">Order placed</h2>
+    <p id="confirmMessage">Your order has been received — we'll confirm your delivery or pickup window shortly.</p>
+    <div id="orderRefBlock" style="display:none; margin-bottom:18px;">
+      <div class="hint" style="margin-bottom:4px;">Order reference</div>
+      <div style="font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--ink);" id="orderRefDisplay"></div>
+    </div>
+    <div id="pickupCodeBlock" style="display:none; margin-bottom:22px;">
+      <div class="hint" style="margin-bottom:6px;">Your pickup code — show this at the counter</div>
+      <div style="font-family:var(--font-display); font-size:32px; font-weight:600; letter-spacing:4px; color:var(--ink);" id="pickupCodeDisplay"></div>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button type="button" class="btn btn-primary" id="confirmBackBtn" style="width:auto; padding:12px 26px;">Back to home</button>
+      <a href="#" id="confirmWaBtn" class="btn btn-outline" style="width:auto; padding:12px 26px; display:none;">Message us on WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main checkout layout -->
+<div class="wrap" id="checkoutLayout">
+  <div class="layout">
+    <div>
+      <form id="checkoutForm">
+        <div class="panel">
+          <h2>How would you like your order?</h2>
+          <div class="pay-options">
+            <label class="pay-option selected" data-value="delivery">
+              <input type="radio" name="fulfillMethod" value="delivery" checked>
+              <div>
+                <div class="t">Delivery</div>
+                <div class="d">We bring your order to your address.</div>
+              </div>
+            </label>
+            <label class="pay-option" data-value="pickup">
+              <input type="radio" name="fulfillMethod" value="pickup">
+              <div>
+                <div class="t">Pick up in-store</div>
+                <div class="d">Collect at our shop — free, no delivery fee. You'll get a pickup code to show at the counter.</div>
+              </div>
+            </label>
+          </div>
+          <div class="bank-details" id="pickupNote">
+            <div><span>Pickup location</span><span>No. 5, Orofin Street, Maza-Maza, Lagos</span></div>
+            <div><span>Hours</span><span>Daily, 8:00 AM – 9:30 PM</span></div>
+            <div class="hint" style="margin-top:8px;">Bring the pickup code we send you — we'll ask for it at the counter before handing your order over.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="detailsHeading">Delivery details</h2>
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input type="text" id="fullName" required placeholder="e.g. Adaeze Okafor">
+          </div>
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" required placeholder="e.g. 080X XXX XXXX">
+          </div>
+          <div id="deliveryFields">
+            <div class="field-row">
+              <div class="field">
+                <label for="stateSelect">State</label>
+                <select id="stateSelect" required>
+                  <option value="">Select state</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="lgaSelect">Local Government Area</label>
+                <select id="lgaSelect" required disabled>
+                  <option value="">Select state first</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="address">Street address</label>
+              <textarea id="address" required disabled placeholder="Select your state and LGA first, then add house number, street, landmark"></textarea>
+            </div>
+            <div class="hint" id="feeHint">Free delivery on Lagos orders over ₦20,000.</div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="deliveryDate" id="dateLabel">Delivery date</label>
+              <input type="date" id="deliveryDate" required>
+            </div>
+            <div class="field">
+              <label for="deliveryTime">Preferred time</label>
+              <select id="deliveryTime" required>
+                <option value="">Select a window</option>
+                <option value="9am – 12pm">9am – 12pm</option>
+                <option value="12pm – 3pm">12pm – 3pm</option>
+                <option value="3pm – 6pm">3pm – 6pm</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Payment</h2>
+          <div class="pay-options">
+            <label class="pay-option selected" data-value="cod">
+              <input type="radio" name="payMethod" value="cod" checked>
+              <div>
+                <div class="t">Pay on delivery</div>
+                <div class="d">Cash or card paid directly to the rider when your order arrives.</div>
+              </div>
+            </label>
+            <label class="pay-option" data-value="transfer">
+              <input type="radio" name="payMethod" value="transfer">
+              <div>
+                <div class="t">Bank transfer</div>
+                <div class="d">Transfer in advance and we'll pack your order once received.</div>
+              </div>
+            </label>
+          </div>
+          <div class="bank-details" id="bankDetails">
+            <div><span>Bank</span><span>First Bank</span></div>
+            <div><span>Account name</span><span>Obey Your Needs</span></div>
+            <div><span>Account number</span><span>3101087257</span></div>
+            <div class="hint" style="margin-top:8px;">Please transfer after placing your order and send us the receipt on WhatsApp.</div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Order summary</h2>
+        <div id="summaryLines"></div>
+        <div class="row"><span>Subtotal</span><span id="sumSubtotal">₦0</span></div>
+        <div class="row"><span>Delivery fee</span><span id="sumDelivery">Select an area</span></div>
+        <div class="row total"><span>Total</span><span id="sumTotal">₦0</span></div>
+      </div>
+      <button type="submit" form="checkoutForm" class="btn btn-primary" id="placeOrderBtn" style="margin-top:18px;">Place order</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="viewPolicy" style="display:none;">
+<div class="wrap">
+  <button type="button" class="back-link" id="policyBackLink" style="background:none; border:none; cursor:pointer; margin-top:20px;">&larr; Back to shop</button>
+  <div class="checkout-title">
+    <h1>Return, Refund &amp; Quality Guarantee</h1>
+    <p>Straightforward terms, because you're trusting us with fresh food.</p>
+  </div>
+  <div class="panel" style="margin:24px 0 60px; max-width:720px;">
+    <h2>Our quality guarantee</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">If anything arrives spoiled, damaged, or not what you ordered, message us on WhatsApp within <strong>24 hours of delivery or pickup</strong> with a photo — we'll replace the item or refund it, no argument.</p>
+
+    <h2>Perishable items</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">Because fresh, frozen, and live items can't be resold once they leave our hands, we can't accept returns for a change of mind after delivery or pickup. Please double-check your order before checkout.</p>
+
+    <h2>Live animals</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">For live chicken and turkey, please inspect at the point of delivery or pickup — issues must be raised immediately at handover, as we can't accept a live-animal complaint raised afterward.</p>
+
+    <h2>Cancellations</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">You can cancel free of charge any time before we've packed your order. Once it's packed or out for delivery, cancellation may no longer be possible since the items are already committed.</p>
+
+    <h2>Refunds</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">Approved refunds are sent back to your original payment method — bank transfer refunds are processed within <strong>5–7 business days</strong>. If you paid on delivery, we'll agree the best way to refund you directly.</p>
+
+    <h2>Delivery windows</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">At checkout you'll choose a delivery window — 9am–12pm, 12pm–3pm, or 3pm–6pm. We'll do our best to arrive within it, but Lagos traffic means we can't guarantee an exact time.</p>
+
+    <h2>Delivery issues</h2>
+    <p style="margin-bottom:16px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;">If nobody's available to receive a delivery, message us to reschedule — a second delivery attempt carries the same delivery fee as your original order.</p>
+
+    <h2>Public holidays</h2>
+    <p style="color:var(--ink-soft); font-size:14.5px; line-height:1.6;">Around major public holidays, delivery windows may be more limited or orders may need to be rescheduled — we'll always confirm with you directly rather than leave you guessing.</p>
+  </div>
+</div>
+</div>
+
+<div id="viewTracking" style="display:none;">
+<div class="wrap">
+  <button type="button" class="back-link" id="trackingBackLink" style="background:none; border:none; cursor:pointer; margin-top:20px;">&larr; Back to shop</button>
+  <div class="checkout-title">
+    <h1>Track your order</h1>
+    <p>Enter the order reference you were given at checkout.</p>
+  </div>
+  <div class="panel" style="margin:24px 0 60px; max-width:480px;">
+    <form id="trackingForm">
+      <div class="field">
+        <label for="trackingRefInput">Order reference</label>
+        <input type="text" id="trackingRefInput" required placeholder="e.g. K7P2QX" style="text-transform:uppercase;" maxlength="6">
+      </div>
+      <button type="submit" class="btn btn-primary">Check status</button>
+    </form>
+    <div id="trackingResult" style="margin-top:22px; display:none;"></div>
+    <div id="trackingError" class="hint" style="margin-top:14px; display:none; color:#FF6B6B;"></div>
+  </div>
+</div>
+</div>
+
+<!-- ================= GLOBAL OVERLAYS ================= -->
+<!-- ================= CART DRAWER ================= -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="icon-btn" id="closeDrawer" aria-label="Close cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2F5F9" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody">
+    <div class="drawer-empty">Your cart is empty — add something fresh.</div>
+  </div>
+  <div class="drawer-foot">
+    <div class="row"><span>Subtotal</span><span id="drawerSubtotal">₦0</span></div>
+    <div class="row total"><span>Total</span><span id="drawerTotal">₦0</span></div>
+    <button class="btn btn-primary" id="checkoutBtn">Go to checkout</button>
+    <button class="btn btn-buoy" id="waCartBtn">Send order via WhatsApp</button>
+  </div>
+</aside>
+
+<!-- ================= VARIANT PICKER ================= -->
+<div class="modal-overlay" id="variantModalOverlay">
+  <div class="variant-modal">
+    <div class="variant-modal-head">
+      <h3 id="variantModalTitle">Choose a size</h3>
+      <button class="icon-btn" id="closeVariantModal" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2F5F9" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="variantModalList"></div>
+  </div>
+</div>
+
+<!-- ================= WHATSAPP FLOAT ================= -->
+<a href="#" id="waFloat" class="wa-float" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9 3 3 9 3 16c0 2.6.8 5 2.1 7L3 29l6.2-2c2 1.1 4.3 1.7 6.8 1.7 7 0 13-6 13-13S23 3 16 3zm0 23.6c-2.2 0-4.3-.6-6.1-1.7l-.4-.3-4 1 1-3.9-.3-.4A10.6 10.6 0 0 1 5.4 16c0-5.8 4.8-10.6 10.6-10.6S26.6 10.2 26.6 16 21.8 26.6 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
+</a>
+
+<!-- ================= MOBILE NAV DRAWER ================= -->
+<div class="overlay" id="navOverlay"></div>
+<aside class="drawer drawer-left" id="navDrawer" aria-label="Site menu">
+  <div class="drawer-head">
+    <span class="brand-name">Menu</span>
+    <button class="icon-btn" id="closeNavDrawer" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2F5F9" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <nav class="nav-drawer-links">
+    <a href="#shop" data-nav-link>Shop</a>
+    <a href="#bulk" data-nav-link>Bulk</a>
+    <a href="#how" data-nav-link>How it works</a>
+    <a href="#about" data-nav-link>Sourcing</a>
+    <a href="#contact" data-nav-link>Contact</a>
+  </nav>
+  <div class="nav-drawer-foot">
+    <a href="#" id="waNavBtn" class="btn btn-buoy">Order on WhatsApp</a>
+    <a href="tel:+2347038112671" class="btn btn-outline">Call 0703 811 2671</a>
+  </div>
+</aside>
+
+
+<script>
+(function(){
+
+  // ==============================================================
+  // BACKEND CONFIG — fill these in after setting up Supabase
+  // (see backend/SETUP.md). Until filled in, the site runs entirely
+  // on the FALLBACK_PRODUCTS below and orders only go via WhatsApp —
+  // nothing breaks, it just isn't saving real order records yet.
+  // ==============================================================
+  const SUPABASE_URL = 'https://udhbmiqsjverbkcidemr.supabase.co';       // e.g. https://xxxxx.supabase.co
+  const SUPABASE_ANON_KEY = 'sb_publishable_C4-A28ax2HO9KagteXfoeQ_EppTfUSX';     // the public "anon" key, not the secret one
+
+  let supabase = null;
+  const backendConfigured = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 20;
+  if(backendConfigured && window.supabase){
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  const FREE_DELIVERY_THRESHOLD = 20000;
+
+  const NIGERIA_STATES = {
+    "Abia": ["Aba North", "Aba South", "Arochukwu", "Bende", "Ikwuano", "Isiala-Ngwa North", "Isiala-Ngwa South", "Isuikwato", "Obi Ngwa", "Ohafia", "Osisioma", "Ugwunagbo", "Ukwa East", "Ukwa West", "Umuahia North", "Umuahia South", "Umu-Neochi"],
+    "Adamawa": ["Demsa", "Fufore", "Ganaye", "Gireri", "Gombi", "Guyuk", "Hong", "Jada", "Lamurde", "Madagali", "Maiha", "Mayo-Belwa", "Michika", "Mubi North", "Mubi South", "Numan", "Shelleng", "Song", "Toungo", "Yola North", "Yola South"],
+    "Akwa Ibom": ["Abak", "Eastern Obolo", "Eket", "Esit Eket", "Essien Udim", "Etim Ekpo", "Etinan", "Ibeno", "Ibesikpo Asutan", "Ibiono Ibom", "Ika", "Ikono", "Ikot Abasi", "Ikot Ekpene", "Ini", "Itu", "Mbo", "Mkpat Enin", "Nsit Atai", "Nsit Ibom", "Nsit Ubium", "Obot Akara", "Okobo", "Onna", "Oron", "Oruk Anam", "Udung Uko", "Ukanafun", "Uruan", "Urue-Offong/Oruko", "Uyo"],
+    "Anambra": ["Aguata", "Anambra East", "Anambra West", "Anaocha", "Awka North", "Awka South", "Ayamelum", "Dunukofia", "Ekwusigo", "Idemili North", "Idemili South", "Ihiala", "Njikoka", "Nnewi North", "Nnewi South", "Ogbaru", "Onitsha North", "Onitsha South", "Orumba North", "Orumba South", "Oyi"],
+    "Bauchi": ["Alkaleri", "Bauchi", "Bogoro", "Damban", "Darazo", "Dass", "Ganjuwa", "Giade", "Itas/Gadau", "Jama'are", "Katagum", "Kirfi", "Misau", "Ningi", "Shira", "Tafawa-Balewa", "Toro", "Warji", "Zaki"],
+    "Bayelsa": ["Brass", "Ekeremor", "Kolokuma/Opokuma", "Nembe", "Ogbia", "Sagbama", "Southern Ijaw", "Yenagoa"],
+    "Benue": ["Ado", "Agatu", "Apa", "Buruku", "Gboko", "Guma", "Gwer East", "Gwer West", "Katsina-Ala", "Konshisha", "Kwande", "Logo", "Makurdi", "Obi", "Ogbadibo", "Oju", "Okpokwu", "Ohimini", "Oturkpo", "Tarka", "Ukum", "Ushongo", "Vandeikya"],
+    "Borno": ["Abadam", "Askira/Uba", "Bama", "Bayo", "Biu", "Chibok", "Damboa", "Dikwa", "Gubio", "Guzamala", "Gwoza", "Hawul", "Jere", "Kaga", "Kala/Balge", "Konduga", "Kukawa", "Kwaya Kusar", "Mafa", "Magumeri", "Maiduguri", "Marte", "Mobbar", "Monguno", "Ngala", "Nganzai", "Shani"],
+    "Cross River": ["Akpabuyo", "Odukpani", "Akamkpa", "Biase", "Abi", "Ikom", "Yakurr", "Odubra", "Boki", "Ogoja", "Yala", "Obanliku", "Obudu", "Calabar South", "Etung", "Bekwarra", "Bakassi", "Calabar Municipality"],
+    "Delta": ["Oshimili South", "Aniocha North", "Aniocha South", "Ika South", "Ika North-East", "Ndokwa West", "Ndokwa East", "Isoko South", "Isoko North", "Bomadi", "Burutu", "Ughelli South", "Ughelli North", "Ethiope West", "Ethiope East", "Sapele", "Okpe", "Warri North", "Warri South", "Uvwie", "Udu", "Warri South West", "Ukwuani", "Oshimili North", "Patani"],
+    "Ebonyi": ["Afikpo North", "Afikpo South (Edda)", "Onicha", "Ohaozara", "Abakaliki", "Ishielu", "Ikwo", "Ezza North", "Ezza South", "Ohaukwu", "Ivo", "Ebonyi", "Izzi"],
+    "Edo": ["Esan North-East", "Esan Central", "Esan West", "Esan South-East", "Egor", "Ikpoba-Okha", "Etsako Central", "Etsako East", "Etsako West", "Igueben", "Oredo", "Orhionmwon", "Ovia North-East", "Ovia South-West", "Owan East", "Owan West", "Uhunmwonde"],
+    "Ekiti": ["Ado", "Efon", "Ekiti East", "Ekiti South-West", "Ekiti West", "Emure/Ise/Orun", "Gbonyin", "Ido/Osi", "Ijero", "Ikere", "Ikole", "Ilejemeje", "Irepodun/Ifelodun", "Ise/Orun", "Moba", "Oye"],
+    "Enugu": ["Aninri", "Awgu", "Enugu East", "Enugu North", "Enugu South", "Ezeagu", "Igbo-Etiti", "Igbo-Eze North", "Igbo-Eze South", "Isi-Uzo", "Nkanu East", "Nkanu West", "Nsukka", "Oji River", "Udenu", "Udi", "Uzo-Uwani"],
+    "Gombe": ["Akko", "Balanga", "Billiri", "Dukku", "Kaltungo", "Kwami", "Shomgom", "Funakaye", "Gombe", "Nafada", "Yamaltu/Deba"],
+    "Imo": ["Aboh-Mbaise", "Ahiazu-Mbaise", "Ehime-Mbano", "Ezinihitte", "Ideato North", "Ideato South", "Ihitte/Uboma", "Ikeduru", "Isiala Mbano", "Isu", "Mbaitoli", "Ngor-Okpala", "Njaba", "Nwangele", "Nkwerre", "Obowo", "Oguta", "Ohaji/Egbema", "Okigwe", "Orlu", "Orsu", "Oru East", "Oru West", "Owerri Municipal", "Owerri North", "Owerri West"],
+    "Jigawa": ["Auyo", "Babura", "Birni Kudu", "Biriniwa", "Buji", "Dutse", "Gagarawa", "Garki", "Gumel", "Guri", "Gwaram", "Gwiwa", "Hadejia", "Jahun", "Kafin Hausa", "Kaugama", "Kazaure", "Kiri Kasamma", "Kiyawa", "Maigatari", "Malam Madori", "Miga", "Ringim", "Roni", "Sule-Tankarkar", "Taura", "Yankwashi"],
+    "Kaduna": ["Birni-Gwari", "Chikun", "Giwa", "Igabi", "Ikara", "Jaba", "Jema'a", "Kachia", "Kaduna North", "Kaduna South", "Kagarko", "Kajuru", "Kaura", "Kauru", "Kubau", "Kudan", "Lere", "Makarfi", "Sabon-Gari", "Sanga", "Soba", "Zango-Kataf", "Zaria"],
+    "Kano": ["Ajingi", "Albasu", "Bagwai", "Bebeji", "Bichi", "Bunkure", "Dala", "Dambatta", "Dawakin Kudu", "Dawakin Tofa", "Doguwa", "Fagge", "Gabasawa", "Garko", "Garun Mallam", "Gaya", "Gezawa", "Gwale", "Gwarzo", "Kabo", "Kano Municipal", "Karaye", "Kibiya", "Kiru", "Kumbotso", "Kunchi", "Kura", "Madobi", "Makoda", "Minjibir", "Nasarawa", "Rano", "Rimin Gado", "Rogo", "Shanono", "Sumaila", "Takai", "Tarauni", "Tofa", "Tsanyawa", "Tudun Wada", "Ungogo", "Warawa", "Wudil"],
+    "Katsina": ["Bakori", "Batagarawa", "Batsari", "Baure", "Bindawa", "Charanchi", "Dandume", "Danja", "Dan Musa", "Daura", "Dutsi", "Dutsin-Ma", "Faskari", "Funtua", "Ingawa", "Jibia", "Kafur", "Kaita", "Kankara", "Kankia", "Katsina", "Kurfi", "Kusada", "Mai'Adua", "Malumfashi", "Mani", "Mashi", "Matazu", "Musawa", "Rimi", "Sabuwa", "Safana", "Sandamu", "Zango"],
+    "Kebbi": ["Aleiro", "Arewa-Dandi", "Argungu", "Augie", "Bagudo", "Birnin Kebbi", "Bunza", "Dandi", "Fakai", "Gwandu", "Jega", "Kalgo", "Koko/Besse", "Maiyama", "Ngaski", "Sakaba", "Shanga", "Suru", "Wasagu/Danko", "Yauri", "Zuru"],
+    "Kogi": ["Adavi", "Ajaokuta", "Ankpa", "Bassa", "Dekina", "Ibaji", "Idah", "Igalamela-Odolu", "Ijumu", "Kabba/Bunu", "Kogi", "Lokoja", "Mopa-Muro", "Ofu", "Ogori/Mangongo", "Okehi", "Okene", "Olamaboro", "Omala", "Yagba East", "Yagba West"],
+    "Kwara": ["Asa", "Baruten", "Edu", "Ekiti", "Ifelodun", "Ilorin East", "Ilorin West", "Ilorin South", "Irepodun", "Isin", "Kaiama", "Moro", "Offa", "Oke-Ero", "Oyun", "Pategi"],
+    "Lagos": ["Agege", "Ajeromi-Ifelodun", "Alimosho", "Amuwo-Odofin", "Apapa", "Badagry", "Epe", "Eti-Osa", "Ibeju-Lekki", "Ifako-Ijaiye", "Ikeja", "Ikorodu", "Kosofe", "Lagos Island", "Lagos Mainland", "Mushin", "Ojo", "Oshodi-Isolo", "Shomolu", "Surulere"],
+    "Nasarawa": ["Akwanga", "Awe", "Doma", "Karu", "Keana", "Keffi", "Kokona", "Lafia", "Nasarawa", "Nasarawa-Eggon", "Obi", "Toto", "Wamba"],
+    "Niger": ["Agaie", "Agwara", "Bida", "Borgu", "Bosso", "Chanchaga", "Edati", "Gbako", "Gurara", "Katcha", "Kontagora", "Lapai", "Lavun", "Magama", "Mariga", "Mashegu", "Mokwa", "Moya", "Paikoro", "Rafi", "Rijau", "Shiroro", "Suleja", "Tafa", "Wushishi"],
+    "Ogun": ["Abeokuta North", "Abeokuta South", "Ado-Odo/Ota", "Yewa North", "Yewa South", "Ewekoro", "Ifo", "Ijebu East", "Ijebu North", "Ijebu North East", "Ijebu Ode", "Ikenne", "Imeko-Afon", "Ipokia", "Obafemi-Owode", "Ogun Waterside", "Odeda", "Odogbolu", "Remo North", "Shagamu"],
+    "Ondo": ["Akoko North East", "Akoko North West", "Akoko South East", "Akoko South West", "Akure North", "Akure South", "Ese-Odo", "Idanre", "Ifedore", "Ilaje", "Ile-Oluji/Okeigbo", "Irele", "Odigbo", "Okitipupa", "Ondo East", "Ondo West", "Ose", "Owo"],
+    "Osun": ["Aiyedade", "Aiyedire", "Atakumosa East", "Atakumosa West", "Boluwaduro", "Boripe", "Ede North", "Ede South", "Egbedore", "Ejigbo", "Ife Central", "Ife East", "Ife North", "Ife South", "Ifedayo", "Ifelodun", "Ila", "Ilesha East", "Ilesha West", "Irepodun", "Irewole", "Isokan", "Iwo", "Obokun", "Odo-Otin", "Ola-Oluwa", "Olorunda", "Oriade", "Orolu", "Osogbo"],
+    "Oyo": ["Afijio", "Akinyele", "Atiba", "Atisbo", "Egbeda", "Ibadan North", "Ibadan North East", "Ibadan North West", "Ibadan South East", "Ibadan South West", "Ibarapa Central", "Ibarapa East", "Ibarapa North", "Ido", "Irepo", "Iseyin", "Itesiwaju", "Iwajowa", "Kajola", "Lagelu", "Ogbomosho North", "Ogbomosho South", "Ogo Oluwa", "Olorunsogo", "Oluyole", "Ona-Ara", "Orelope", "Ori Ire", "Oyo East", "Oyo West", "Saki East", "Saki West", "Surulere"],
+    "Plateau": ["Bokkos", "Barkin Ladi", "Bassa", "Jos East", "Jos North", "Jos South", "Kanam", "Kanke", "Langtang North", "Langtang South", "Mangu", "Mikang", "Pankshin", "Qua'an Pan", "Riyom", "Shendam", "Wase"],
+    "Rivers": ["Abua/Odual", "Ahoada East", "Ahoada West", "Akuku Toru", "Andoni", "Asari-Toru", "Bonny", "Degema", "Emohua", "Eleme", "Etche", "Gokana", "Ikwerre", "Khana", "Obio/Akpor", "Ogba/Egbema/Ndoni", "Ogu/Bolo", "Okrika", "Omuma", "Opobo/Nkoro", "Oyigbo", "Port Harcourt", "Tai"],
+    "Sokoto": ["Binji", "Bodinga", "Dange Shuni", "Gada", "Goronyo", "Gudu", "Gwadabawa", "Illela", "Isa", "Kware", "Kebbe", "Rabah", "Sabon Birni", "Shagari", "Silame", "Sokoto North", "Sokoto South", "Tambuwal", "Tangaza", "Tureta", "Wamako", "Wurno", "Yabo"],
+    "Taraba": ["Ardo-kola", "Bali", "Donga", "Gashaka", "Gassol", "Ibi", "Jalingo", "Karim-Lamido", "Kurmi", "Lau", "Sardauna", "Takum", "Ussa", "Wukari", "Yorro", "Zing"],
+    "Yobe": ["Bade", "Bursari", "Damaturu", "Fika", "Fune", "Geidam", "Gujba", "Gulani", "Jakusko", "Karasuwa", "Machina", "Nangere", "Nguru", "Potiskum", "Tarmuwa", "Yunusari", "Yusufari"],
+    "Zamfara": ["Anka", "Bakura", "Birnin Magaji", "Bukkuyum", "Bungudu", "Gummi", "Gusau", "Kaura Namoda", "Maradun", "Maru", "Shinkafi", "Talata Mafara", "Chafe", "Tsafe", "Zurmi"],
+    "FCT (Abuja)": ["Abaji", "Abuja Municipal", "Bwari", "Gwagwalada", "Kuje", "Kwali"],
+  };
+
+  const STATE_ORDER = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara", "FCT (Abuja)"];
+
+  // Flat delivery-fee tiers within Lagos (our primary service state). Other states are
+  // still selectable for the address, but fee is confirmed manually via WhatsApp.
+  const LAGOS_FEE_TIERS = [
+    { fee: 0,    lgas: ["Lagos Island","Lagos Mainland","Eti-Osa","Surulere","Apapa"] },
+    { fee: 1500, lgas: ["Ikeja","Shomolu","Kosofe","Mushin","Ifako-Ijaiye"] },
+    { fee: 2500, lgas: ["Oshodi-Isolo","Agege","Amuwo-Odofin","Ajeromi-Ifelodun","Alimosho"] },
+    { fee: 4000, lgas: ["Ojo","Badagry","Ikorodu","Epe","Ibeju-Lekki"] }
+  ];
+
+  // Every other state gets a concrete flat interstate rate (not free, not "TBC") —
+  // grouped roughly by distance/region from Lagos, our dispatch base.
+  const STATE_REGION_FEE = {
+    "Ogun": 4000, "Oyo": 4500, "Osun": 5000, "Ondo": 5500, "Ekiti": 5500,
+    "Edo": 6000, "Delta": 6000, "Rivers": 7000, "Bayelsa": 7500, "Cross River": 7500, "Akwa Ibom": 7500,
+    "Anambra": 6000, "Imo": 6500, "Abia": 6500, "Ebonyi": 7000, "Enugu": 6500,
+    "Kwara": 6000, "Kogi": 6500, "Benue": 7500, "Plateau": 8000, "Nasarawa": 7500, "Niger": 7000, "FCT (Abuja)": 7500,
+    "Kaduna": 8000, "Kano": 8500, "Katsina": 9000, "Jigawa": 9000, "Kebbi": 9000, "Sokoto": 9500, "Zamfara": 9000,
+    "Bauchi": 9000, "Gombe": 9500, "Adamawa": 10000, "Taraba": 9500, "Yobe": 10000, "Borno": 10500
+  };
+
+  function getDeliveryFee(state, lga){
+    if(state === 'Lagos'){
+      const tier = LAGOS_FEE_TIERS.find(t => t.lgas.includes(lga));
+      return tier ? tier.fee : 4000;
+    }
+    return STATE_REGION_FEE[state] ?? 9000;
+  }
+
+  // ---------- Product data ----------
+  const FISH_ICON = `<path d="M4 30c12-18 36-22 50-22 11 17 22 17 31 5-4 22-20 26-31 44-14 0-38-5-50-27Z"/><circle cx="24" cy="27" r="2.4"/>`;
+  const SHELL_ICON = `<path d="M18 10c20 5 34 20 38 40-14 0-34-10-44-24-5-8-2-14 6-16Z"/><circle cx="24" cy="17" r="2"/>`;
+  const SPIRAL_ICON = `<path d="M40 14c14 0 24 12 24 24S54 60 40 60c-6-16-6-30 0-46Z"/><path d="M40 20c8 4 12 12 12 18s-4 14-12 18" opacity=".5"/>`;
+  const OCTOPUS_ICON = `<path d="M50 14c-14 0-24 10-24 22s10 20 24 20 24-8 24-20-10-22-24-22Z"/><path d="M28 50l-8 20M40 54l-4 22M50 56v22M60 54l4 22M72 50l8 20"/>`;
+  const CHICKEN_ICON = `<path d="M40 8c-10 0-16 8-16 16 0 5 2 9 5 12-9 4-15 14-15 26 0 4 3 6 6 6h40c3 0 6-2 6-6 0-12-6-22-15-26 3-3 5-7 5-12 0-8-6-16-16-16Z"/><path d="M40 8V2M34 6l-4-4M46 6l4-4" opacity=".6"/>`;
+  const TURKEY_ICON = `<path d="M40 6c-9 0-15 7-15 15 0 4 1 8 4 11-8 4-14 15-14 27 0 4 3 7 7 7h36c4 0 7-3 7-7 0-12-6-23-14-27 3-3 4-7 4-11 0-8-6-15-15-15Z"/><path d="M26 12c-4-4-10-4-14 0M54 12c4-4 10-4 14 0" opacity=".5"/>`;
+  const BEEF_ICON = `<path d="M14 40c0-16 14-28 30-28s30 12 30 28-14 20-30 20-30-4-30-20Z"/><circle cx="30" cy="34" r="7" opacity=".5"/><circle cx="52" cy="36" r="5" opacity=".5"/>`;
+  const GOAT_ICON = `<path d="M22 14c-4 4-6 10-4 16-6 4-8 12-4 18l10 22h16l6-16c8-2 14-10 12-18-2-9-10-16-19-18-6-5-12-6-17-4Z"/><circle cx="30" cy="26" r="2" opacity=".6"/>`;
+  const EGGS_ICON = `<rect x="10" y="14" width="60" height="44" rx="4"/><ellipse cx="24" cy="28" rx="7" ry="9"/><ellipse cx="40" cy="28" rx="7" ry="9"/><ellipse cx="56" cy="28" rx="7" ry="9"/><ellipse cx="24" cy="46" rx="7" ry="9" opacity=".6"/><ellipse cx="40" cy="46" rx="7" ry="9" opacity=".6"/><ellipse cx="56" cy="46" rx="7" ry="9" opacity=".6"/>`;
+  const LOBSTER_ICON = `<path d="M50 8c8 6 8 16 4 24l6 40h-20l6-40c-4-8-4-18 4-24Z"/><path d="M40 20 30 14M60 20l10-6M38 30l-16-4M62 30l16-4" opacity=".5"/>`;
+  const GIZZARD_ICON = `<path d="M40 16c-14 0-22 12-22 24 0 14 10 24 22 24s22-10 22-24c0-12-8-24-22-24Z"/><path d="M40 24c-6 4-8 10-8 16s2 12 8 16M40 24c6 4 8 10 8 16s-2 12-8 16" opacity=".5"/>`;
+
+  const ICON_MAP = {
+    FISH: FISH_ICON, SHELL: SHELL_ICON, SPIRAL: SPIRAL_ICON, OCTOPUS: OCTOPUS_ICON,
+    CHICKEN: CHICKEN_ICON, TURKEY: TURKEY_ICON, BEEF: BEEF_ICON, GOAT: GOAT_ICON,
+    EGGS: EGGS_ICON, LOBSTER: LOBSTER_ICON, GIZZARD: GIZZARD_ICON
+  };
+
+  // FALLBACK_PRODUCTS is used until the live database loads (or if it's
+  // unreachable) — this way the shop always works, never shows blank.
+  const FALLBACK_PRODUCTS = [
+    // Fresh / live
+    {id:'catfish_live', name:'Live Catfish', cat:'fresh', tags:['fresh','fish'], price:4000, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'croaker', name:'Fresh Croaker Fish', cat:'fresh', tags:['fresh','fish'], price:4500, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'tilapia', name:'Fresh Tilapia', cat:'fresh', tags:['fresh','fish'], price:4000, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'crab', name:'Fresh Crab', cat:'fresh', tags:['fresh','shellfish'], price:6000, unit:'kg', stock:true, icon:SHELL_ICON, featured:true, description:"Firm, sweet-fleshed crab, cleaned and ready to cook — great for pepper soup, stews, or a simple garlic butter finish. Landed fresh, never sitting around."},
+    {id:'lobster', name:'Fresh Lobster', cat:'fresh', tags:['fresh','shellfish'], price:15000, unit:'kg', stock:false, icon:LOBSTER_ICON},
+    {id:'shrimp', name:'Fresh Shrimp', cat:'fresh', tags:['fresh','shellfish'], price:8000, unit:'kg', stock:true, icon:SHELL_ICON},
+    {id:'octopus', name:'Fresh Octopus', cat:'fresh', tags:['fresh','fish'], price:7000, unit:'kg', stock:true, icon:OCTOPUS_ICON},
+    {id:'chicken_live', name:'Live Chicken', cat:'fresh', tags:['fresh','meat'], price:8500, unit:'piece', stock:true, icon:CHICKEN_ICON},
+    {id:'turkey_live', name:'Live Turkey', cat:'fresh', tags:['fresh','meat'], price:18000, unit:'piece', stock:true, icon:TURKEY_ICON},
+    {id:'eggs', name:'Eggs (Crate of 30)', cat:'fresh', tags:['fresh','meat'], price:4200, unit:'crate', stock:true, icon:EGGS_ICON},
+    {id:'goat_meat', name:'Goat Meat', cat:'fresh', tags:['fresh','meat'], price:7500, unit:'kg', stock:true, icon:GOAT_ICON},
+    {id:'beef', name:'Beef', cat:'fresh', tags:['fresh','meat'], price:6500, unit:'kg', stock:true, icon:BEEF_ICON},
+    {id:'mutton', name:'Mutton (Ram Meat)', cat:'fresh', tags:['fresh','meat'], price:8000, unit:'kg', stock:true, icon:GOAT_ICON},
+    {id:'gizzard', name:'Chicken Gizzard', cat:'fresh', tags:['fresh','meat'], price:4500, unit:'kg', stock:true, icon:GIZZARD_ICON},
+    // Frozen
+    {id:'titus_frozen', name:'Titus Fish — Frozen', cat:'frozen', tags:['frozen','fish'], price:4800, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'mackerel_frozen', name:'Mackerel (Kote) — Frozen', cat:'frozen', tags:['frozen','fish'], price:5200, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'sardine_frozen', name:'Sardine — Frozen', cat:'frozen', tags:['frozen','fish'], price:3500, compareAt:4000, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'chicken_frozen', name:'Chicken — Frozen', cat:'frozen', tags:['frozen','meat'], price:4000, unit:'kg', stock:true, icon:CHICKEN_ICON},
+    {id:'turkey_frozen', name:'Turkey (Whole) — Frozen', cat:'frozen', tags:['frozen','meat'], price:19000, unit:'piece', stock:true, icon:TURKEY_ICON},
+    // Processed (dried/smoked/roasted)
+    {id:'catfish_dried', name:'Catfish — Dried/Roasted', cat:'processed', tags:['processed','fish'], price:5500, unit:'kg', stock:true, icon:FISH_ICON},
+    {id:'panla', name:'Panla Fish (Dried)', cat:'processed', tags:['processed','fish'], price:3800, unit:'piece', stock:true, icon:FISH_ICON},
+    {id:'stockfish', name:'Stockfish (Okporoko)', cat:'processed', tags:['processed','fish'], price:4500, unit:'piece', stock:true, icon:FISH_ICON,
+      variants:[
+        {id:'single', label:'Single piece', price:4500, compareAt:null, stock:true},
+        {id:'bag10', label:'Bag of 10 pieces', price:40000, compareAt:45000, stock:true},
+        {id:'carton25', label:'Full carton (25 pieces)', price:95000, compareAt:null, stock:true}
+      ]},
+    {id:'bonga_dried', name:'Bonga Fish (Dried/Smoked)', cat:'processed', tags:['processed','fish'], price:4200, compareAt:5000, unit:'pack', stock:true, icon:FISH_ICON,
+      variants:[
+        {id:'pack10', label:'Pack of 10', price:4200, compareAt:5000, stock:true},
+        {id:'halfbag', label:'Half bag (~50 pieces)', price:18000, compareAt:null, stock:true},
+        {id:'fullbag', label:'Full bag (~100 pieces)', price:33000, compareAt:36000, stock:true}
+      ]},
+    {id:'crayfish', name:'Crayfish (Dried, Ground)', cat:'processed', tags:['processed','shellfish'], price:3000, unit:'bowl', stock:true, icon:SHELL_ICON},
+    {id:'ponmo', name:'Ponmo (Cow Skin)', cat:'processed', tags:['processed','meat'], price:2800, unit:'kg', stock:true, icon:BEEF_ICON},
+    {id:'snail', name:'Snail (Cleaned)', cat:'processed', tags:['processed','meat'], price:3500, unit:'dozen', stock:true, icon:SPIRAL_ICON}
+  ];
+
+  const CAT_LABELS = {fresh:'Fresh Catch', frozen:'Frozen', processed:'Processed'};
+
+  let products = FALLBACK_PRODUCTS;
+
+  const grid = document.getElementById('productGrid');
+
+  function money(n){ return '₦' + Math.round(n).toLocaleString('en-NG'); }
+
+  let currentFilter = 'all';
+  let currentSort = 'featured';
+  let searchTerm = '';
+
+  function buildProductCard(p){
+    const card = document.createElement('div');
+    card.className = 'card';
+    const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
+
+    let priceHtml, actionsHtml, inStock, discount;
+
+    if(hasVariants){
+      const inStockVariants = p.variants.filter(v => v.stock);
+      inStock = inStockVariants.length > 0;
+      const pricedFrom = inStockVariants.length ? inStockVariants : p.variants;
+      const prices = pricedFrom.map(v => v.price);
+      const minP = Math.min(...prices);
+      const maxP = Math.max(...prices);
+      priceHtml = minP === maxP
+        ? `${money(minP)}`
+        : `${money(minP)} <span class="price-range">– ${money(maxP)}</span>`;
+      discount = null;
+      actionsHtml = `
+        <button class="add-btn" data-select-variants="${p.id}" ${inStock ? '' : 'disabled'}>
+          ${inStock ? 'Select options' : 'Notify me'}
+        </button>
+        ${inStock ? `<a href="#" class="wa-quick-btn" data-select-variants="${p.id}">Order via WhatsApp</a>` : ''}
+      `;
+    } else {
+      inStock = p.stock;
+      discount = p.compareAt ? Math.round((1 - p.price / p.compareAt) * 100) : null;
+      priceHtml = `${p.compareAt ? `<span class="compare-price">${money(p.compareAt)}</span>` : ''}${money(p.price)} <small>/ ${p.unit}</small>`;
+      actionsHtml = `
+        <button class="add-btn" data-id="${p.id}" ${inStock ? '' : 'disabled'}>
+          ${inStock ? 'Add to Cart' : 'Notify me'}
+        </button>
+        ${inStock ? `<a href="#" class="wa-quick-btn" data-wa-id="${p.id}">Order via WhatsApp</a>` : ''}
+      `;
+    }
+
+    card.innerHTML = `
+      <div class="card-media">
+        <span class="stock-badge ${inStock ? 'in':'out'}">${inStock ? 'In Stock':'Out of Stock'}</span>
+        ${hasVariants ? `<span class="bulk-badge">Bulk</span>` : (discount ? `<span class="discount-badge">${discount}% off</span>` : '')}
+        ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;">` : `<svg viewBox="0 0 100 68" stroke-width="2">${p.icon}</svg>`}
+      </div>
+      <div class="card-body">
+        <span class="card-cat">${CAT_LABELS[p.cat] || p.cat}</span>
+        <span class="card-name">${p.name}</span>
+        <span class="card-price">${priceHtml}</span>
+        <div class="card-actions">${actionsHtml}</div>
+      </div>`;
+    return card;
+  }
+
+  function renderGrid(){
+    grid.innerHTML = '';
+    let list = products.filter(p => currentFilter === 'all' || p.tags.includes(currentFilter));
+    if(searchTerm){
+      list = list.filter(p => p.name.toLowerCase().includes(searchTerm));
+    }
+    if(currentSort === 'price-asc') list = [...list].sort((a,b) => a.price - b.price);
+    if(currentSort === 'price-desc') list = [...list].sort((a,b) => b.price - a.price);
+
+    const countEl = document.getElementById('productCount');
+    if(countEl) countEl.textContent = `${list.length} item${list.length === 1 ? '' : 's'}`;
+
+    if(list.length === 0){
+      grid.innerHTML = `<div class="grid-empty">No products match "${searchTerm}" — try a different search or filter.</div>`;
+      return;
+    }
+
+    list.forEach(p => grid.appendChild(buildProductCard(p)));
+  }
+
+  function renderBulkSection(){
+    const section = document.getElementById('bulk');
+    const bulkGrid = document.getElementById('bulkGrid');
+    const bulkProducts = products.filter(p => Array.isArray(p.variants) && p.variants.length > 0);
+    if(bulkProducts.length === 0){
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = 'block';
+    bulkGrid.innerHTML = '';
+    bulkProducts.forEach(p => bulkGrid.appendChild(buildProductCard(p)));
+  }
+  renderGrid();
+  renderFeatured();
+  renderBulkSection();
+
+  // ---------- Load live product data from the database, if configured ----------
+  async function loadProductsFromDB(){
+    if(!supabase) return; // not configured yet — fallback data stays in use
+    try{
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if(error || !data || !data.length) return;
+      products = data.map(row => ({
+        id: row.id,
+        name: row.name,
+        cat: row.category,
+        tags: row.tags || [],
+        price: Number(row.price),
+        compareAt: row.compare_at_price ? Number(row.compare_at_price) : null,
+        unit: row.unit,
+        stock: row.in_stock,
+        icon: ICON_MAP[row.icon_svg] || FISH_ICON,
+        image_url: row.image_url || null,
+        description: row.description || null,
+        featured: !!row.featured,
+        variants: Array.isArray(row.variants) ? row.variants.map(v => ({
+          id: v.id, label: v.label, price: Number(v.price),
+          compareAt: v.compare_at_price ? Number(v.compare_at_price) : null,
+          stock: v.in_stock !== false
+        })) : []
+      }));
+      renderGrid();
+      renderFeatured();
+      renderBulkSection();
+      renderCart(); // in case a stale cart references an id whose details changed
+    } catch(e){
+      // Network hiccup or misconfigured project — silently keep fallback data.
+    }
+  }
+  loadProductsFromDB();
+
+  document.getElementById('filters').addEventListener('click', e => {
+    const chip = e.target.closest('.filter-chip');
+    if(!chip) return;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFilter = chip.dataset.filter;
+    renderGrid();
+  });
+
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    currentSort = e.target.value;
+    renderGrid();
+  });
+
+  document.getElementById('productSearch').addEventListener('input', e => {
+    searchTerm = e.target.value.trim().toLowerCase();
+    renderGrid();
+  });
+
+  // ---------- Cart ----------
+  const CART_KEY = 'anchorAndIceCart';
+  let cart = loadCart(); // cartKey -> qty. cartKey is either a plain product id,
+                          // or "productId::variantId" for a chosen bulk/size option.
+
+  // Resolves any cart key (plain product, or product+variant) into the
+  // details needed to display/total it. Returns null if it no longer
+  // matches anything real (orphaned).
+  function getCartItemDetails(cartKey){
+    const sep = cartKey.indexOf('::');
+    if(sep === -1){
+      const p = products.find(p => p.id === cartKey);
+      if(!p) return null;
+      return { name: p.name, price: p.price, unit: p.unit, icon: p.icon };
+    }
+    const productId = cartKey.slice(0, sep);
+    const variantId = cartKey.slice(sep + 2);
+    const p = products.find(p => p.id === productId);
+    if(!p || !Array.isArray(p.variants)) return null;
+    const v = p.variants.find(v => v.id === variantId);
+    if(!v) return null;
+    return { name: `${p.name} — ${v.label}`, price: v.price, unit: '', icon: p.icon };
+  }
+
+  function loadCart(){
+    try{
+      const raw = localStorage.getItem(CART_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch(e){ return {}; }
+  }
+
+  function saveCart(){
+    try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e){}
+  }
+
+  function addToCart(cartKey){
+    cart[cartKey] = (cart[cartKey] || 0) + 1;
+    saveCart();
+    renderCart();
+    openDrawer();
+  }
+
+  function changeQty(cartKey, delta){
+    if(!cart[cartKey]) return;
+    cart[cartKey] += delta;
+    if(cart[cartKey] <= 0) delete cart[cartKey];
+    saveCart();
+    renderCart();
+  }
+
+  function cartTotal(){
+    return Object.entries(cart).reduce((sum, [cartKey, qty]) => {
+      const item = getCartItemDetails(cartKey);
+      return sum + (item ? item.price * qty : 0);
+    }, 0);
+  }
+
+  // If the product catalog changes (new prices loaded, an item or variant
+  // removed), a cart saved from before can end up pointing at something
+  // that no longer exists. Rather than crash, drop those items and keep going.
+  function pruneOrphanedCartItems(){
+    let changed = false;
+    Object.keys(cart).forEach(cartKey => {
+      if(!getCartItemDetails(cartKey)){
+        delete cart[cartKey];
+        changed = true;
+      }
+    });
+    if(changed) saveCart();
+    return changed;
+  }
+
+  function renderCart(){
+    pruneOrphanedCartItems();
+    const body = document.getElementById('drawerBody');
+    const ids = Object.keys(cart);
+    document.getElementById('cartCount').textContent =
+      ids.reduce((n,id) => n + cart[id], 0);
+
+    if(ids.length === 0){
+      body.innerHTML = '<div class="drawer-empty">Your cart is empty — add something fresh.</div>';
+    } else {
+      body.innerHTML = ids.map(id => {
+        const item = getCartItemDetails(id);
+        if(!item) return ''; // safety net — pruneOrphanedCartItems should already have removed these
+        return `
+        <div class="cart-line">
+          <svg viewBox="0 0 100 68" stroke-width="2">${item.icon}</svg>
+          <div class="info">
+            <div class="n">${item.name}</div>
+            <div class="p">${money(item.price)}${item.unit ? ' / ' + item.unit : ''}</div>
+            <div class="qty">
+              <button data-id="${id}" data-d="-1">−</button>
+              <span>${cart[id]}</span>
+              <button data-id="${id}" data-d="1">+</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    const total = cartTotal();
+    document.getElementById('drawerSubtotal').textContent = money(total);
+    document.getElementById('drawerTotal').textContent = money(total);
+  }
+
+  function handleProductCardClick(e){
+    const btn = e.target.closest('.add-btn');
+    if(btn && !btn.disabled && btn.dataset.id) addToCart(btn.dataset.id);
+
+    const waBtn = e.target.closest('[data-wa-id]');
+    if(waBtn){
+      e.preventDefault();
+      quickOrderViaWhatsApp(waBtn.dataset.waId);
+    }
+
+    const variantTrigger = e.target.closest('[data-select-variants]');
+    if(variantTrigger){
+      e.preventDefault();
+      openVariantModal(variantTrigger.dataset.selectVariants);
+    }
+  }
+  grid.addEventListener('click', handleProductCardClick);
+  document.getElementById('bulkGrid').addEventListener('click', handleProductCardClick);
+
+  document.getElementById('drawerBody').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-id]');
+    if(btn) changeQty(btn.dataset.id, parseInt(btn.dataset.d, 10));
+  });
+
+  // ---------- Drawer open/close ----------
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('open'); }
+  function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
+  document.getElementById('cartToggle').addEventListener('click', openDrawer);
+  document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // ---------- Delivery fee calculator ----------
+  const calcState = document.getElementById('calcState');
+  const calcLga = document.getElementById('calcLga');
+  const orderValue = document.getElementById('orderValue');
+  const feeOutput = document.getElementById('feeOutput');
+
+  STATE_ORDER.forEach(state => {
+    const opt = document.createElement('option');
+    opt.value = state;
+    opt.textContent = state;
+    calcState.appendChild(opt);
+  });
+
+  calcState.addEventListener('change', () => {
+    const state = calcState.value;
+    if(!state){
+      calcLga.disabled = true;
+      calcLga.innerHTML = '<option value="">Select state first</option>';
+    } else {
+      calcLga.disabled = false;
+      calcLga.innerHTML = '<option value="">Select LGA</option>' +
+        NIGERIA_STATES[state].map(lga => `<option value="${lga}">${lga}</option>`).join('');
+    }
+    updateFee();
+  });
+  calcLga.addEventListener('change', updateFee);
+  orderValue.addEventListener('input', updateFee);
+
+  function updateFee(){
+    const state = calcState.value;
+    const lga = calcLga.value;
+    if(!state || !lga){
+      feeOutput.textContent = 'Select state & LGA';
+      return;
+    }
+    const fee = getDeliveryFee(state, lga);
+    const val = parseFloat(orderValue.value) || 0;
+    const applyFreeThreshold = state === 'Lagos';
+    const finalFee = (applyFreeThreshold && val >= FREE_DELIVERY_THRESHOLD && fee > 0) ? 0 : fee;
+    feeOutput.textContent = finalFee === 0 ? 'Free delivery' : money(finalFee);
+  }
+
+  // ---------- WhatsApp ordering ----------
+  const WHATSAPP_NUMBER = '2347038112671'; // replace with real business number, digits only incl. country code
+
+  function buildWhatsAppMessage(){
+    const ids = Object.keys(cart);
+    if(ids.length === 0){
+      return `Hi Obey Your Needs! I'd like to place an order.`;
+    }
+    let msg = `Hi Obey Your Needs, I'd like to order:\n`;
+    ids.forEach(id => {
+      const item = getCartItemDetails(id);
+      if(!item) return;
+      msg += `• ${item.name} x${cart[id]} (${money(item.price)}${item.unit ? '/' + item.unit : ''}) = ${money(item.price*cart[id])}\n`;
+    });
+    msg += `\nTotal: ${money(cartTotal())}\n\nPlease confirm delivery time and payment details.`;
+    return msg;
+  }
+
+  function openWhatsApp(){
+    const text = encodeURIComponent(buildWhatsAppMessage());
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
+  }
+
+  document.getElementById('waFloat').addEventListener('click', e => { e.preventDefault(); openWhatsApp(); });
+  document.getElementById('waHeroBtn').addEventListener('click', e => { e.preventDefault(); openWhatsApp(); });
+  document.getElementById('waFootBtn').addEventListener('click', e => { e.preventDefault(); openWhatsApp(); });
+  document.getElementById('waCartBtn').addEventListener('click', e => { e.preventDefault(); openWhatsApp(); });
+
+  function quickOrderViaWhatsApp(id){
+    const p = products.find(p => p.id === id);
+    if(!p) return;
+    const msg = `Hi Obey Your Needs, I'd like to order:\n\n• ${p.name} x1 (${money(p.price)}/${p.unit})\n\nPlease confirm availability, delivery time and payment details.`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  // ---------- Variant / bulk size picker ----------
+  const variantModalOverlay = document.getElementById('variantModalOverlay');
+
+  function openVariantModal(productId){
+    const p = products.find(p => p.id === productId);
+    if(!p || !Array.isArray(p.variants)) return;
+    document.getElementById('variantModalTitle').textContent = `${p.name} — choose a size`;
+    document.getElementById('variantModalList').innerHTML = p.variants.map(v => `
+      <div class="variant-option ${v.stock ? '' : 'out'}">
+        <div>
+          <div class="label">${v.label}${v.stock ? '' : ' (out of stock)'}</div>
+          <div class="price">${v.compareAt ? `<span class="compare-price">${money(v.compareAt)}</span>` : ''}${money(v.price)}</div>
+        </div>
+        <button data-add-variant="${p.id}::${v.id}" ${v.stock ? '' : 'disabled'}>${v.stock ? 'Add' : 'Unavailable'}</button>
+      </div>
+    `).join('');
+    variantModalOverlay.classList.add('show');
+  }
+
+  function closeVariantModal(){ variantModalOverlay.classList.remove('show'); }
+
+  document.getElementById('closeVariantModal').addEventListener('click', closeVariantModal);
+  variantModalOverlay.addEventListener('click', e => { if(e.target === variantModalOverlay) closeVariantModal(); });
+  document.getElementById('variantModalList').addEventListener('click', e => {
+    const btn = e.target.closest('[data-add-variant]');
+    if(!btn || btn.disabled) return;
+    addToCart(btn.dataset.addVariant);
+    closeVariantModal();
+  });
+
+  // ---------- Featured product ----------
+  function renderFeatured(){
+    const section = document.getElementById('featuredSection');
+    const featuredProduct = products.find(p => {
+      if(!p.featured) return false;
+      if(Array.isArray(p.variants) && p.variants.length) return p.variants.some(v => v.stock);
+      return p.stock;
+    });
+    if(!featuredProduct){
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = 'block';
+    document.getElementById('featuredName').textContent = featuredProduct.name;
+    document.getElementById('featuredDesc').textContent = featuredProduct.description || '';
+
+    const hasVariants = Array.isArray(featuredProduct.variants) && featuredProduct.variants.length > 0;
+    const addBtn = document.getElementById('featuredAddBtn');
+    const waBtn = document.getElementById('featuredWaBtn');
+    if(hasVariants){
+      const inStockVariants = featuredProduct.variants.filter(v => v.stock);
+      const prices = inStockVariants.map(v => v.price);
+      const minP = Math.min(...prices), maxP = Math.max(...prices);
+      document.getElementById('featuredPrice').textContent = minP === maxP ? money(minP) : `${money(minP)} – ${money(maxP)}`;
+      addBtn.textContent = 'Select options';
+      addBtn.onclick = () => openVariantModal(featuredProduct.id);
+      waBtn.onclick = (e) => { e.preventDefault(); openVariantModal(featuredProduct.id); };
+    } else {
+      document.getElementById('featuredPrice').textContent = `${money(featuredProduct.price)} / ${featuredProduct.unit}`;
+      addBtn.textContent = 'Add to cart';
+      addBtn.onclick = () => addToCart(featuredProduct.id);
+      waBtn.onclick = (e) => { e.preventDefault(); quickOrderViaWhatsApp(featuredProduct.id); };
+    }
+
+    const img = document.getElementById('featuredImg');
+    const icon = document.getElementById('featuredIcon');
+    if(featuredProduct.image_url){
+      img.src = featuredProduct.image_url;
+      img.style.display = 'block';
+      icon.style.display = 'none';
+    } else {
+      icon.innerHTML = featuredProduct.icon;
+      icon.style.display = 'block';
+      img.style.display = 'none';
+    }
+  }
+
+  renderCart();
+
+  document.getElementById('checkoutBtn').addEventListener('click', () => {
+    showCheckoutView();
+  });
+
+
+  // ---------- Checkout view ----------
+  const stateSelect = document.getElementById('stateSelect');
+  const lgaSelect = document.getElementById('lgaSelect');
+  const addressField = document.getElementById('address');
+
+  STATE_ORDER.forEach(state => {
+    const opt = document.createElement('option');
+    opt.value = state;
+    opt.textContent = state;
+    stateSelect.appendChild(opt);
+  });
+
+  function refreshAddressAvailability(){
+    const state = stateSelect.value;
+    const lga = lgaSelect.value;
+    const ready = !!(state && lga);
+    addressField.disabled = !ready;
+    if(ready){
+      addressField.placeholder = `House number, street, landmark in ${lga}, ${state}`;
+    } else {
+      addressField.placeholder = 'Select your state and LGA first, then add house number, street, landmark';
+      addressField.value = '';
+    }
+  }
+
+  stateSelect.addEventListener('change', () => {
+    const state = stateSelect.value;
+    lgaSelect.innerHTML = '';
+    if(!state){
+      lgaSelect.disabled = true;
+      lgaSelect.innerHTML = '<option value="">Select state first</option>';
+    } else {
+      lgaSelect.disabled = false;
+      lgaSelect.innerHTML = '<option value="">Select LGA</option>' +
+        NIGERIA_STATES[state].map(lga => `<option value="${lga}">${lga}</option>`).join('');
+    }
+    const feeHint = document.getElementById('feeHint');
+    feeHint.textContent = state === 'Lagos'
+      ? 'Free delivery on Lagos orders over ₦20,000.'
+      : state ? `Flat interstate rate applies for ${state} — packed and dispatched within 24 hours.` : 'Free delivery on Lagos orders over ₦20,000.';
+    refreshAddressAvailability();
+    updateTotals();
+  });
+  lgaSelect.addEventListener('change', () => { refreshAddressAvailability(); updateTotals(); });
+
+  function selectedLocation(){
+    const state = stateSelect.value;
+    const lga = lgaSelect.value;
+    if(!state || !lga) return null;
+    return {state, lga, fee: getDeliveryFee(state, lga)};
+  }
+
+  function isPickup(){
+    const checked = document.querySelector('input[name="fulfillMethod"]:checked');
+    return checked && checked.value === 'pickup';
+  }
+
+  function updateTotals(){
+    const sub = cartTotal();
+    if(isPickup()){
+      document.getElementById('sumDelivery').textContent = 'Free (Pickup)';
+      document.getElementById('sumTotal').textContent = money(sub);
+      return;
+    }
+    const loc = selectedLocation();
+    if(!loc){
+      document.getElementById('sumDelivery').textContent = 'Select state & LGA';
+      document.getElementById('sumTotal').textContent = money(sub);
+      return;
+    }
+    const applyFreeThreshold = loc.state === 'Lagos';
+    const fee = (applyFreeThreshold && sub >= FREE_DELIVERY_THRESHOLD && loc.fee > 0) ? 0 : loc.fee;
+    document.getElementById('sumDelivery').textContent = fee === 0 ? 'Free' : money(fee);
+    document.getElementById('sumTotal').textContent = money(sub + fee);
+  }
+
+  function renderSummary(){
+    pruneOrphanedCartItems();
+    const ids = Object.keys(cart);
+    document.getElementById('summaryLines').innerHTML = ids.map(id => {
+      const item = getCartItemDetails(id);
+      if(!item) return '';
+      return `
+      <div class="summary-line">
+        <svg viewBox="0 0 100 68" stroke-width="2">${item.icon}</svg>
+        <div>
+          <div class="n">${item.name}</div>
+          <div class="q">Qty ${cart[id]} &times; ${money(item.price)}${item.unit ? ' / ' + item.unit : ''}</div>
+        </div>
+        <div class="amt">${money(item.price * cart[id])}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('sumSubtotal').textContent = money(cartTotal());
+    updateTotals();
+  }
+
+  // Payment method toggle (scoped to its own group only)
+  document.querySelectorAll('input[name="payMethod"]').forEach(input => {
+    input.closest('.pay-option').addEventListener('click', () => {
+      document.querySelectorAll('input[name="payMethod"]').forEach(i => i.closest('.pay-option').classList.remove('selected'));
+      const opt = input.closest('.pay-option');
+      opt.classList.add('selected');
+      input.checked = true;
+      document.getElementById('bankDetails').classList.toggle('show', input.value === 'transfer');
+    });
+  });
+
+  // Fulfillment method toggle (Delivery vs Pickup), scoped to its own group
+  document.querySelectorAll('input[name="fulfillMethod"]').forEach(input => {
+    input.closest('.pay-option').addEventListener('click', () => {
+      document.querySelectorAll('input[name="fulfillMethod"]').forEach(i => i.closest('.pay-option').classList.remove('selected'));
+      const opt = input.closest('.pay-option');
+      opt.classList.add('selected');
+      input.checked = true;
+
+      const pickup = input.value === 'pickup';
+      document.getElementById('pickupNote').classList.toggle('show', pickup);
+      document.getElementById('deliveryFields').style.display = pickup ? 'none' : '';
+      stateSelect.required = !pickup;
+      lgaSelect.required = !pickup;
+      addressField.required = !pickup;
+      document.getElementById('detailsHeading').textContent = pickup ? 'Pickup details' : 'Delivery details';
+      document.getElementById('dateLabel').textContent = pickup ? 'Pickup date' : 'Delivery date';
+      updateTotals();
+    });
+  });
+
+  document.getElementById('deliveryDate').min = new Date().toISOString().split('T')[0];
+
+  function generatePickupCode(){
+    return String(Math.floor(1000 + Math.random() * 9000));
+  }
+
+  function generateShortRef(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I to avoid confusion
+    let ref = '';
+    for(let i = 0; i < 6; i++) ref += chars[Math.floor(Math.random() * chars.length)];
+    return ref;
+  }
+
+  document.getElementById('checkoutForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const pickup = isPickup();
+    const loc = pickup ? null : selectedLocation();
+    if(!pickup && !loc){ alert('Please select your state and local government area.'); return; }
+
+    const submitBtn = document.getElementById('placeOrderBtn');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Placing order…';
+    submitBtn.disabled = true;
+
+    pruneOrphanedCartItems();
+    const ids = Object.keys(cart);
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = pickup ? '' : addressField.value.trim();
+    const date = document.getElementById('deliveryDate').value;
+    const time = document.getElementById('deliveryTime').value;
+    const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+
+    const sub = cartTotal();
+    const applyFreeThreshold = !pickup && loc.state === 'Lagos';
+    const fee = pickup ? 0 : ((applyFreeThreshold && sub >= FREE_DELIVERY_THRESHOLD && loc.fee > 0) ? 0 : loc.fee);
+    const total = sub + fee;
+    const pickupCode = pickup ? generatePickupCode() : null;
+
+    let msg = `Hi Obey Your Needs, I'd like to place this order:\n\n`;
+    ids.forEach(id => {
+      const item = getCartItemDetails(id);
+      if(!item) return;
+      msg += `• ${item.name} x${cart[id]} (${money(item.price)}${item.unit ? '/' + item.unit : ''}) = ${money(item.price*cart[id])}\n`;
+    });
+    msg += `\nSubtotal: ${money(sub)}\n`;
+    msg += pickup ? `Fulfillment: Store Pickup (Free)\n` : `Delivery (${loc.lga}, ${loc.state}): ${fee === 0 ? 'Free' : money(fee)}\n`;
+    msg += `Total: ${money(total)}\n`;
+    msg += `\nName: ${name}\nPhone: ${phone}`;
+    if(pickup){
+      msg += `\nPickup date: ${date} — ${time}\nPickup code: ${pickupCode} (please have this ready at the counter)`;
+    } else {
+      msg += `\nAddress: ${address}, ${loc.lga}, ${loc.state}\nDelivery: ${date} — ${time}`;
+    }
+    msg += `\nPayment: ${payMethod === 'cod' ? 'Pay on delivery' : 'Bank transfer'}`;
+
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+    // The database is now the real order system — try saving there first.
+    // WhatsApp only auto-opens as a fallback if that save doesn't work.
+    let savedToDb = false;
+    let orderRef = null;
+    const shortRef = generateShortRef();
+    if(supabase){
+      try{
+        const orderItems = ids.map(id => {
+          const item = getCartItemDetails(id);
+          return item ? { id: id, name: item.name, qty: cart[id], price: item.price, unit: item.unit || '' } : null;
+        }).filter(Boolean);
+        const { data, error } = await supabase.from('orders').insert({
+          customer_name: name,
+          phone: phone,
+          fulfillment_method: pickup ? 'pickup' : 'delivery',
+          state: pickup ? null : loc.state,
+          lga: pickup ? null : loc.lga,
+          address: pickup ? null : address,
+          delivery_date: date || null,
+          delivery_time: time || null,
+          payment_method: payMethod,
+          items: orderItems,
+          subtotal: sub,
+          delivery_fee: fee,
+          total: total,
+          pickup_code: pickupCode,
+          short_ref: shortRef
+        }).select().single();
+        if(!error && data){
+          savedToDb = true;
+          orderRef = data.short_ref || shortRef;
+        }
+      } catch(e){
+        // fall through — savedToDb stays false, WhatsApp fallback kicks in below
+      }
+    }
+
+    cart = {};
+    saveCart();
+    renderCart();
+    submitBtn.textContent = originalLabel;
+    submitBtn.disabled = false;
+
+    // Wire the WhatsApp button either way — available on request even
+    // when the order already saved independently.
+    document.getElementById('confirmWaBtn').href = waUrl;
+
+    if(savedToDb){
+      document.getElementById('confirmHeading').textContent = 'Order placed';
+      document.getElementById('confirmMessage').textContent = "Your order has been received — we'll confirm your delivery or pickup window shortly. Message us on WhatsApp any time if you'd like to follow up directly.";
+      document.getElementById('orderRefDisplay').textContent = orderRef;
+      document.getElementById('orderRefBlock').style.display = 'block';
+      document.getElementById('confirmWaBtn').style.display = 'inline-flex';
+    } else {
+      // Fallback: no working database connection — WhatsApp is the only
+      // way this order reaches the business, so open it automatically.
+      document.getElementById('confirmHeading').textContent = 'Order details sent';
+      document.getElementById('confirmMessage').textContent = "We've opened WhatsApp with your order summary — hit send there and we'll confirm your delivery or pickup window right away.";
+      document.getElementById('orderRefBlock').style.display = 'none';
+      document.getElementById('confirmWaBtn').style.display = 'inline-flex';
+      window.open(waUrl, '_blank');
+    }
+
+    if(pickup){
+      document.getElementById('pickupCodeDisplay').textContent = pickupCode;
+      document.getElementById('pickupCodeBlock').style.display = 'block';
+    }
+    document.getElementById('checkoutLayout').style.display = 'none';
+    document.getElementById('confirmState').classList.add('show');
+  });
+
+  function initCheckoutView(){
+    const ids = Object.keys(cart);
+    document.getElementById('confirmState').classList.remove('show');
+    document.getElementById('pickupCodeBlock').style.display = 'none';
+    if(ids.length === 0){
+      document.getElementById('checkoutLayout').style.display = 'none';
+      document.getElementById('emptyState').style.display = 'block';
+    } else {
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('checkoutLayout').style.display = '';
+      renderSummary();
+    }
+  }
+
+  const ALL_VIEWS = ['viewHome', 'viewCheckout', 'viewPolicy', 'viewTracking'];
+  function hideAllViews(){
+    ALL_VIEWS.forEach(id => { document.getElementById(id).style.display = 'none'; });
+  }
+
+  function showCheckoutView(){
+    closeDrawer();
+    closeNavDrawer();
+    hideAllViews();
+    document.getElementById('viewCheckout').style.display = 'block';
+    initCheckoutView();
+    window.scrollTo(0, 0);
+  }
+
+  function showHomeView(){
+    hideAllViews();
+    document.getElementById('viewHome').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function showPolicyView(){
+    closeDrawer();
+    closeNavDrawer();
+    hideAllViews();
+    document.getElementById('viewPolicy').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function showTrackingView(){
+    closeDrawer();
+    closeNavDrawer();
+    hideAllViews();
+    document.getElementById('viewTracking').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById('checkoutBackLink').addEventListener('click', showHomeView);
+  document.getElementById('emptyBackBtn').addEventListener('click', () => { showHomeView(); document.getElementById('shop').scrollIntoView(); });
+  document.getElementById('confirmBackBtn').addEventListener('click', showHomeView);
+  document.getElementById('policyLink').addEventListener('click', e => { e.preventDefault(); showPolicyView(); });
+  document.getElementById('policyBackLink').addEventListener('click', showHomeView);
+  document.getElementById('trackOrderLink').addEventListener('click', e => { e.preventDefault(); showTrackingView(); });
+  document.getElementById('trackingBackLink').addEventListener('click', showHomeView);
+
+  document.getElementById('trackingForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const resultEl = document.getElementById('trackingResult');
+    const errorEl = document.getElementById('trackingError');
+    resultEl.style.display = 'none';
+    errorEl.style.display = 'none';
+
+    if(!supabase){
+      errorEl.textContent = "Order tracking isn't connected yet — message us on WhatsApp instead.";
+      errorEl.style.display = 'block';
+      return;
+    }
+    const ref = document.getElementById('trackingRefInput').value.trim().toUpperCase();
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Checking…';
+    submitBtn.disabled = true;
+
+    try{
+      const { data, error } = await supabase.rpc('get_order_status', { ref });
+      if(error || !data || !data.length){
+        errorEl.textContent = "We couldn't find an order with that reference — double-check it and try again.";
+        errorEl.style.display = 'block';
+        return;
+      }
+      const o = data[0];
+      const STATUS_LABELS = { new:'New', confirmed:'Confirmed', packed:'Packed', out_for_delivery:'Out for delivery', completed:'Completed', cancelled:'Cancelled' };
+      resultEl.innerHTML = `
+        <div class="row"><span>Reference</span><span>${o.short_ref}</span></div>
+        <div class="row"><span>Status</span><span style="font-weight:700; color:var(--ink);">${STATUS_LABELS[o.status] || o.status}</span></div>
+        <div class="row"><span>Fulfillment</span><span>${o.fulfillment_method === 'pickup' ? 'Store pickup' : 'Delivery'}</span></div>
+        ${o.delivery_date ? `<div class="row"><span>Scheduled</span><span>${o.delivery_date}${o.delivery_time ? ' — ' + o.delivery_time : ''}</span></div>` : ''}
+        <div class="row total"><span>Total</span><span>${money(o.total)}</span></div>
+      `;
+      resultEl.style.display = 'block';
+    } catch(err){
+      errorEl.textContent = 'Something went wrong checking that order — please try again.';
+      errorEl.style.display = 'block';
+    } finally{
+      submitBtn.textContent = originalLabel;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- Mobile nav drawer ----------
+  const navDrawer = document.getElementById('navDrawer');
+  const navOverlay = document.getElementById('navOverlay');
+  function openNavDrawer(){ navDrawer.classList.add('open'); navOverlay.classList.add('open'); }
+  function closeNavDrawer(){ navDrawer.classList.remove('open'); navOverlay.classList.remove('open'); }
+  document.querySelector('.menu-toggle').addEventListener('click', openNavDrawer);
+  document.getElementById('closeNavDrawer').addEventListener('click', closeNavDrawer);
+  navOverlay.addEventListener('click', closeNavDrawer);
+  document.querySelectorAll('[data-nav-link]').forEach(link => {
+    link.addEventListener('click', () => {
+      closeNavDrawer();
+      if(document.getElementById('viewHome').style.display === 'none') showHomeView();
+    });
+  });
+  document.getElementById('waNavBtn').addEventListener('click', e => { e.preventDefault(); closeNavDrawer(); openWhatsApp(); });
+
+
+  document.getElementById('logoLink').addEventListener('click', e => { e.preventDefault(); showHomeView(); });
+
+  // ---------- Reviews ----------
+  async function loadReviews(){
+    const grid = document.getElementById('reviewGrid');
+    const empty = document.getElementById('reviewEmpty');
+    if(!supabase){
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    try{
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('approved', true)
+        .order('created_at', { ascending: false })
+        .limit(9);
+      if(error || !data || !data.length){
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      grid.innerHTML = data.map(r => `
+        <div class="review-card">
+          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+          <div class="comment">${r.comment}</div>
+          <div class="who">${r.customer_name}</div>
+          <div class="when">${new Date(r.created_at).toLocaleDateString('en-NG', { year:'numeric', month:'short', day:'numeric' })}</div>
+        </div>
+      `).join('');
+    } catch(e){
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+    }
+  }
+  loadReviews();
+
+  const reviewFormWrap = document.getElementById('reviewFormWrap');
+  document.getElementById('showReviewFormBtn').addEventListener('click', () => {
+    reviewFormWrap.style.display = reviewFormWrap.style.display === 'none' ? 'block' : 'none';
+  });
+  document.getElementById('cancelReviewBtn').addEventListener('click', () => {
+    reviewFormWrap.style.display = 'none';
+  });
+
+  let selectedRating = 0;
+  document.querySelectorAll('#starPicker button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedRating = parseInt(btn.dataset.star, 10);
+      document.getElementById('reviewRating').value = selectedRating;
+      document.querySelectorAll('#starPicker button').forEach(b => {
+        b.classList.toggle('active', parseInt(b.dataset.star, 10) <= selectedRating);
+      });
+    });
+  });
+
+  document.getElementById('reviewForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const msgEl = document.getElementById('reviewFormMsg');
+    if(!supabase){
+      msgEl.textContent = "Reviews aren't connected yet — check back soon.";
+      msgEl.style.display = 'block';
+      return;
+    }
+    if(selectedRating === 0){
+      msgEl.textContent = 'Please pick a star rating.';
+      msgEl.style.display = 'block';
+      return;
+    }
+    const name = document.getElementById('reviewName').value.trim();
+    const comment = document.getElementById('reviewComment').value.trim();
+    const { error } = await supabase.from('reviews').insert({
+      customer_name: name,
+      rating: selectedRating,
+      comment: comment,
+      approved: false
+    });
+    if(error){
+      msgEl.textContent = 'Something went wrong submitting your review — please try again.';
+      msgEl.style.display = 'block';
+      return;
+    }
+    this.reset();
+    selectedRating = 0;
+    document.querySelectorAll('#starPicker button').forEach(b => b.classList.remove('active'));
+    reviewFormWrap.style.display = 'none';
+    msgEl.style.display = 'none';
+    alert("Thanks for your review! It'll appear on the site once we've approved it.");
+  });
+})();
+</script>
+
+</body>
+</html>
